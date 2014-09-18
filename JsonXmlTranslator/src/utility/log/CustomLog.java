@@ -23,6 +23,7 @@ public class CustomLog {
 	private File logFile;
 	private FileWriter fw;
 	private LogLevel currLevel;
+	private BufferedWriter bufferedWriter;
 	
 	private static CustomLog instance = null;
 	protected CustomLog(){
@@ -50,6 +51,7 @@ public class CustomLog {
 			
 			// prepare FileWriter
 			fw = new FileWriter(logFile, true);
+			bufferedWriter = new BufferedWriter(fw);
 	 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -95,9 +97,8 @@ public class CustomLog {
 	}
 	
 	private void write2File(String record) throws IOException{
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.write(record);
-		bw.close();
+		bufferedWriter.write(record);
+		bufferedWriter.newLine();
 	}
 	
 	private void genericLog(LogLevel logLevel, String s){
@@ -109,6 +110,15 @@ public class CustomLog {
 			write2File(record);
 		}catch(Exception ex){
 			
+		}
+	}
+	
+	public void closeFile(){
+		try {
+			bufferedWriter.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
