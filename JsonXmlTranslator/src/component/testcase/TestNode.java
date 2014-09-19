@@ -12,13 +12,13 @@ public class TestNode {
 	@Test
 	public void testGetTitle() {
 		n = new Node ("hihi");
-		System.out.println(n.getTitle());
+		assertEquals(n.getTitle(), "hihi");
 	}
 	
 	@Test
 	public void testGetContent() {
 		n = new Node ("haha", "hehe");
-		System.out.println(n.getContent());
+		assertEquals(n.getContent(), "hehe");
 	}	
 	
 	@Test
@@ -26,10 +26,10 @@ public class TestNode {
 		n = new Node ("haha", "hehe");
 		
 		Node childNode1 = new Node("child1", "child1Content");
-		System.out.println("Before insert childNode hasChildNode() return " + n.hasChildNode());
+		assertFalse(n.hasChildNode());
 		
 		n.addNode(childNode1);
-		System.out.println("After insert childNode hasChildNode() return " + n.hasChildNode());
+		assertTrue(n.hasChildNode());
 		
 	}
 	
@@ -46,21 +46,18 @@ public class TestNode {
 		list.add(childNode3);
 		list.add(childNode4);
 		
-		n = new Node("titleHAHA",list);
+		n = new Node("titleHAHA", list);
 		
-		System.out.print("loop child: ");
-		for (int i=0;i<n.getChildNodeLength();i++)
-			System.out.print(n.getChildNode(i).getContent() + " ");
+		// loop child
+		assertEquals(n.getChildNode(0).getContent(), "child1Content1");
+		assertEquals(n.getChildNode(1).getContent(), "child1Content2");
+		assertEquals(n.getChildNode(2).getContent(), "child1Content3");
+		assertEquals(n.getChildNode(3).getContent(), "child1Content4");
 		
-		System.out.println();
-		
-		System.out.print("Search childa: ");
-		
+		// search childa
 		Node[] listt = n.getChildNode("childa");
-		for (int i=0;i<listt.length;i++)
-			System.out.print(listt[i].getContent() + " ");
-		
-		System.out.println();
+		assertEquals(listt[0].getContent(), "child1Content3");
+		assertEquals(listt[1].getContent(), "child1Content4");
 	}
 
 }
