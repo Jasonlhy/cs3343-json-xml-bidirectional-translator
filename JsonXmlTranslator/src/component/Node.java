@@ -128,10 +128,9 @@ public class Node {
 	 * @return A node
 	 */
 	public Node getChildNode(int index) {
-		if (nodeList == null || nodeList.size() < index + 1)
-			return null;
-		else
-			return nodeList.get(index);
+		Node node = ( (nodeList == null) || (index >= nodeList.size()) )? null : nodeList.get(index);
+
+		return node;
 	}
 
 	/**
@@ -146,9 +145,9 @@ public class Node {
 	 * @return The number of how many child node inside this node
 	 */
 	public int getChildNodeLength() {
-		if (nodeList != null)
-			return nodeList.size();
-		return 0;
+		int length = (nodeList == null)? 0 : nodeList.size();
+		
+		return length;
 	}
 
 	/**
@@ -202,6 +201,7 @@ public class Node {
 	public void addNode(Node node) {
 		if (nodeList == null)
 			nodeList = new ArrayList<Node>();
+		
 		nodeList.add(node);
 		content = null;
 	}
