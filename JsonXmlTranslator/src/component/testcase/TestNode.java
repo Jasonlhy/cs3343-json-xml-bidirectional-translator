@@ -34,6 +34,47 @@ public class TestNode {
 	}
 	
 	@Test
+	public void testChildNodeLength() {
+		n = new Node ("haha", "hehe");
+		assertEquals(n.getChildNodeLength(), 0);
+		
+		Node childNode1 = new Node("child1", "child1Content");
+		n.addNode(childNode1);
+		assertEquals(n.getChildNodeLength(), 1);
+	}
+	
+	@Test
+	public void testGetChildNode(){
+		n = new Node ("haha", "hehe");
+		assertNull(n.getChildNode(2));
+		
+		Node childNode1 = new Node("child1", "child1Content");
+		n.addNode(childNode1);
+		
+		assertNull(n.getChildNode(2));
+		
+		Node firstChild = n.getChildNode(0);
+		assertEquals(firstChild.getTitle(), "child1");
+		assertEquals(firstChild.getContent(), "child1Content");
+	}
+	
+	@Test
+	public void testReplaceNodes(){
+		List<Node> childList1 = new ArrayList<Node>();
+		childList1.add(new Node("child1", "child1Content1"));
+		childList1.add(new Node("child2", "child1Content2"));
+		
+		List<Node> childList2 = new ArrayList<Node>();
+		childList2.add(new Node("child1", "child1Content1"));
+		childList2.add(new Node("child2", "child1Content2"));
+		childList2.add(new Node("child3", "child1Content3"));
+		
+		Node n = new Node("root", childList1);
+		n.replaceNodes(childList2);
+		assertEquals(n.getChildNodeLength(), 3);
+	}
+	
+	@Test
 	public void testChildNodeLengthANDreturnBackNode() {
 		Node childNode1 = new Node("child1", "child1Content1");
 		Node childNode2 = new Node("child2", "child1Content2");
