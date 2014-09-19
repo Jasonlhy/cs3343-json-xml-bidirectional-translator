@@ -65,6 +65,12 @@ public class CustomLog {
 			}
 		}
 	}
+	
+	/**
+	 * Get the instance of Log class
+	 * 
+	 * @return CustomLog singleton class 
+	 */
 	public static CustomLog getInstance(){
 		if(instance == null)
 			instance = new CustomLog();
@@ -113,6 +119,10 @@ public class CustomLog {
 		}
 	}
 	
+	/**
+	 * Close the log file
+	 * 
+	 */
 	public void closeFile(){
 		try {
 			bufferedWriter.close();
@@ -122,42 +132,91 @@ public class CustomLog {
 		}
 	}
 	
+	/**
+	 * Announce a log with error log level
+	 * 
+	 * @param s the error message to be announced
+	 */
 	public void error(String s){
 		genericLog(LogLevel.ERROR, s);
 	}
 	
+	/**
+	 * Announce a log with error log level
+	 * 
+	 * @param ex the exception to be announced
+	 */
 	public void error(Exception ex){
 		genericLog(LogLevel.ERROR, ex.getMessage());
 	}
 	
+	/**
+	 * Announce a log with warn log level
+	 * 
+	 * @param s the error message to be announced
+	 */
 	public void warn(String s){
 		genericLog(LogLevel.WARN, s);
 	}
 	
+	/**
+	 * Announce a log with warn log level
+	 * 
+	 * @param ex the exception to be announced
+	 */
 	public void warn(Exception ex){
 		genericLog(LogLevel.WARN, ex.getMessage());
 	}
 	
+	/**
+	 * Announce a log with info log level
+	 * 
+	 * @param s the error message to be announced
+	 */
 	public void info(String s){
 		genericLog(LogLevel.INFO, s);
 	}
 	
+	/**
+	 * Announce a log with info log level
+	 * 
+	 * @param ex the exception to be announced
+	 */
 	public void info(Exception ex){
 		genericLog(LogLevel.INFO, ex.getMessage());
 	}
 	
+	/**
+	 * Announce a log with debug log level
+	 * @param s the error message to be announced
+	 */
 	public void debug(String s){
 		genericLog(LogLevel.DEBUG, s);
 	}
 	
+	/**
+	 * Announce a log with debug log level
+	 * 
+	 * @param ex the exception to be announced
+	 */
 	public void debug(Exception ex){
 		genericLog(LogLevel.DEBUG, ex.getMessage());
 	}
 	
+	/**
+	 * Announce a log with trace log level
+	 * 
+	 * @param s the error message to be announced
+	 */
 	public void trace(String s){
 		genericLog(LogLevel.TRACE, s);
 	}
 	
+	/**
+	 * Announce a log with trace log level
+	 * 
+	 * @param ex the exception to be announced
+	 */
 	public void trace(Exception ex){
 		genericLog(LogLevel.TRACE, ex.getMessage());
 	}
