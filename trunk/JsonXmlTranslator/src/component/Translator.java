@@ -10,7 +10,7 @@ public class Translator {
 		System.out.println("Hello, Chihang testing");
 		System.out.println("Hello, Thomas testing");
 		System.out.println("Hello, Winson testing gmail acc commit");
-		System.out.println("Hello, belated testing from Kaho. ");
+		System.out.println("Hello, belated testing from Kaho.");
 		//Closing log file
 		CustomLog.getInstance().closeFile();
 	}
