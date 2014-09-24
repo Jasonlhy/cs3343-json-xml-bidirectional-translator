@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
+ * A log used for the project
+ * 
  * @author Thomas
  *
  */
