@@ -1,4 +1,4 @@
-package xml.textcase;
+package xml.testcase;
 
 import static org.junit.Assert.*;
 
