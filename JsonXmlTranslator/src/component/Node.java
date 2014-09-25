@@ -73,6 +73,10 @@ public class Node {
 		this.content = content;
 	}
 
+	public Node() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * @return title key name of the Node
 	 */
@@ -232,5 +236,20 @@ public class Node {
 	 */
 	public boolean hasChildNode() {
 		return nodeList != null;
+	}
+	
+	@Override
+	public String toString(){
+		String s = "";
+		if (hasChildNode()){
+			for (int i = 0; i < nodeList.size(); i++){
+				s += (i == 0) ? nodeList.get(i) : "," + nodeList.get(i);
+			}
+			s = "[" + s + "]";
+		} else {
+			s = "<" + title + " : " + content  + ">";
+		}
+		
+		return s;
 	}
 }
