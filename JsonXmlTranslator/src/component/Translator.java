@@ -11,6 +11,7 @@ public class Translator {
 		System.out.println("Hello, Thomas testing");
 		System.out.println("Hello, Winson testing gmail acc commit");
 		System.out.println("Hello, belated testing from Kaho. [3rd time]");
+		System.out.println("Hello, 私はIvanです、　みんなこんにちは。　ここはTestingです ");
 		//Closing log file
 		CustomLog.getInstance().closeFile();
 	}
