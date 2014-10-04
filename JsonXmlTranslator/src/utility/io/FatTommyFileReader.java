@@ -30,7 +30,6 @@ public class FatTommyFileReader implements TommyFileReader{
 		BufferedReader br = this.getFileReader();
 		
 		while((line=br.readLine())!=null){
-			line = line.trim();
 			sb.append(line);
 			
 		}
