@@ -22,7 +22,7 @@ public class Node {
 	private String title;
 	private String content;
 	private List<Node> nodeList;
-	
+
 	/**
 	 * Create a new empty node
 	 * 
@@ -132,7 +132,8 @@ public class Node {
 	 * @return A node
 	 */
 	public Node getChildNode(int index) {
-		Node node = ( (nodeList == null) || (index >= nodeList.size()) )? null : nodeList.get(index);
+		Node node = ((nodeList == null) || (index >= nodeList.size())) ? null
+				: nodeList.get(index);
 
 		return node;
 	}
@@ -149,8 +150,8 @@ public class Node {
 	 * @return The number of how many child node inside this node
 	 */
 	public int getChildNodeLength() {
-		int length = (nodeList == null)? 0 : nodeList.size();
-		
+		int length = (nodeList == null) ? 0 : nodeList.size();
+
 		return length;
 	}
 
@@ -205,7 +206,7 @@ public class Node {
 	public void addNode(Node node) {
 		if (nodeList == null)
 			nodeList = new ArrayList<Node>();
-		
+
 		nodeList.add(node);
 		content = null;
 	}
@@ -237,19 +238,27 @@ public class Node {
 	public boolean hasChildNode() {
 		return nodeList != null;
 	}
-	
+
+	/**
+	 * Show the node for with key-value so that we can test output node from the
+	 * parser, e.g. root: { id : 19 }, This DOES NOT equals to the JSON
+	 * notation.
+	 * 
+	 * @author Jason
+	 * @since 6-10-2014
+	 */
 	@Override
-	public String toString(){
+	public String toString() {
 		String s = "";
-		if (hasChildNode()){
-			for (int i = 0; i < nodeList.size(); i++){
-				s += (i == 0) ? nodeList.get(i) : "," + nodeList.get(i);
+		if (hasChildNode()) {
+			for (int i = 0; i < nodeList.size(); i++) {
+				s += (i == 0) ? nodeList.get(i) : ", " + nodeList.get(i);
 			}
-			s = "[" + s + "]";
+			s = title + ": { " + s + " }";
 		} else {
-			s = "<" + title + " : " + content  + ">";
+			s = title + " : " + content;
 		}
-		
+
 		return s;
 	}
 }
