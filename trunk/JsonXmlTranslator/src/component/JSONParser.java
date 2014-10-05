@@ -29,28 +29,24 @@ public class JSONParser {
 		boolean gettingKey = false;
 		boolean gettingValue = false;
 
-//		Node currentLevelNode = new Node("root");
-//		Node workingNode = currentLevelNode;
-		Node currentLevelNode = null;
+		// workingNode means the node you are working with to get the value
+		// e.g. "id" : 19
+		// when this scan though "id", the workingNode is NODE with title: "id"
 		Node workingNode = null;
 		do {
 			try {
 				asiicode = reader.read();
 				c = (char) asiicode;
-				//System.out.println(c);
+				// System.out.println(c);
 
 				if (c == '{' || c == '[') {
-					Node baseNode = new Node("base");
-					
-					if (currentLevelNode != null)
-						nodeLevelStack.add(currentLevelNode);
-					if (workingNode != null)
-						workingNode.addNode(baseNode);
-					
-					nodeLevelStack.add(baseNode);
+					if (workingNode == null) {
+						Node rootNode = new Node("root");
+						nodeLevelStack.add(rootNode);
+					} else {
+						nodeLevelStack.add(workingNode);
+					}
 
-					// readjust the base level
-					currentLevelNode = baseNode;
 					gettingKey = false;
 					gettingValue = false;
 				} else if (!gettingKey && !gettingValue) {
@@ -78,13 +74,15 @@ public class JSONParser {
 						workingNode.setContent(valueTemp.trim());
 
 						if (c == '}' || c == ']') {
-							if (nodeLevelStack.size() > 1) // keep the last level
+							// keep the last level
+							if (nodeLevelStack.size() > 1) {
 								nodeLevelStack.pop();
+							}
 						}
 					} else {
 						valueTemp += c;
 					}
-				} 
+				}
 
 			} catch (IOException e) {
 				e.printStackTrace();
