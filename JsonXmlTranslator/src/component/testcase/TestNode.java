@@ -12,13 +12,13 @@ public class TestNode {
 	@Test
 	public void testGetTitle() {
 		n = new Node ("hihi");
-		assertEquals(n.getTitle(), "hihi");
+		assertEquals("hihi", n.getTitle());
 	}
 	
 	@Test
 	public void testGetContent() {
 		n = new Node ("haha", "hehe");
-		assertEquals(n.getContent(), "hehe");
+		assertEquals("hehe", n.getContent());
 	}	
 	
 	@Test
@@ -36,11 +36,11 @@ public class TestNode {
 	@Test
 	public void testChildNodeLength() {
 		n = new Node ("haha", "hehe");
-		assertEquals(n.getChildNodeLength(), 0);
+		assertEquals(0, n.getChildNodeLength());
 		
 		Node childNode1 = new Node("child1", "child1Content");
 		n.addNode(childNode1);
-		assertEquals(n.getChildNodeLength(), 1);
+		assertEquals(1, n.getChildNodeLength());
 	}
 	
 	@Test
@@ -54,8 +54,8 @@ public class TestNode {
 		assertNull(n.getChildNode(2));
 		
 		Node firstChild = n.getChildNode(0);
-		assertEquals(firstChild.getTitle(), "child1");
-		assertEquals(firstChild.getContent(), "child1Content");
+		assertEquals("child1", firstChild.getTitle());
+		assertEquals("child1Content", firstChild.getContent());
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class TestNode {
 		
 		Node n = new Node("root", childList1);
 		n.replaceNodes(childList2);
-		assertEquals(n.getChildNodeLength(), 3);
+		assertEquals(3, n.getChildNodeLength());
 	}
 	
 	@Test
@@ -90,15 +90,31 @@ public class TestNode {
 		n = new Node("titleHAHA", list);
 		
 		// loop child
-		assertEquals(n.getChildNode(0).getContent(), "child1Content1");
-		assertEquals(n.getChildNode(1).getContent(), "child1Content2");
-		assertEquals(n.getChildNode(2).getContent(), "child1Content3");
-		assertEquals(n.getChildNode(3).getContent(), "child1Content4");
+		assertEquals("child1Content1", n.getChildNode(0).getContent());
+		assertEquals("child1Content2", n.getChildNode(1).getContent());
+		assertEquals("child1Content3", n.getChildNode(2).getContent());
+		assertEquals("child1Content4", n.getChildNode(3).getContent());
 		
 		// search childa
 		Node[] listt = n.getChildNode("childa");
-		assertEquals(listt[0].getContent(), "child1Content3");
-		assertEquals(listt[1].getContent(), "child1Content4");
+		assertEquals("child1Content3", listt[0].getContent());
+		assertEquals("child1Content4", listt[1].getContent());
+	}
+	
+	@Test
+	public void testToString1() {
+		Node root = new Node("root");
+		root.addNode(new Node("id", "1"));
+		
+		assertEquals("root: { id : 1 }", root.toString());
+	}
+	
+	public void testToString2() {
+		Node root = new Node("root");
+		root.addNode(new Node("id", "1"));
+		root.addNode(new Node("name", "\"jason\""));
+		
+		assertEquals("root: { id : 1, name : \"jason\" }", root.toString());
 	}
 
 }
