@@ -173,6 +173,27 @@ public class Node {
 	}
 
 	/**
+	 * 
+	 * @param key
+	 * @return 
+	 */
+	public List<Node> search(String key) {
+		return this.searchRecursively(this,key, new ArrayList<Node>());
+	}
+	
+	private List<Node> searchRecursively(Node n,String key, List<Node> result) {
+		
+		if (n.title.equals(key))
+			result.add(n);
+		
+		for (int i=0;i<n.getChildNodeLength();i++)
+			result = n.getChildNode(i).searchRecursively(n.getChildNode(i), key, result);
+		
+		return result;
+	}
+	
+	
+	/**
 	 * set title of this node
 	 * 
 	 * @param title
