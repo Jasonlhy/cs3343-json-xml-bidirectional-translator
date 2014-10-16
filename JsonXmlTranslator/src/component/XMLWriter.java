@@ -31,26 +31,7 @@ public class XMLWriter {
 		return resultant;
 	}
 	
-	public static void main(String[] args) {
-		
-		//Test scenario A
-		//originally adapted from TC1 of JSONParser.java
-		JSONParser parserA = new JSONParser("{\"id\":19}");
-		Node rootA = parserA.parse();
-		System.out.println(rootA);
-		XMLWriter writerA = new XMLWriter();
-		for (String line : writerA.writeXML(rootA))
-			System.out.println(line);
-		
-		//Test scenario B
-		//originally adapted from TC2 of JSONParser.java
-		JSONParser parserB = new JSONParser("{\"id\":19,\"home\":\"fanling\"}");
-		Node rootB = parserB.parse();
-		System.out.println(rootB);
-		XMLWriter writerB = new XMLWriter();
-		for (String line : writerB.writeXML(rootB))
-			System.out.println(line);
-		
-	}
-	
+	/* moved the testcase to a dedicated file lu~ */
+	/* indentation required */
 }
+		
