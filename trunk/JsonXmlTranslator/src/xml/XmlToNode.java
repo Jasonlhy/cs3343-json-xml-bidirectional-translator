@@ -23,18 +23,22 @@ public class XmlToNode {
 	{
 		return null;
 	}
-	
+	//Get the first match "<...>" pattern and cut the string as s1 = <...> and s2 = ...<...>... remain string
+	public String divideToTwo(String xmlString)
+	{
+		return "";
+	}
 	public boolean mostLeftisNode(String xmlString)
 	{
 		return true;
 	}
 	
-	public String getNodename(String xmlnode)
+	public String getNodename(String nodeString)
 	{
 		return "";
 	}
 	
-	public String getValue(String xmlString)
+	public String getValue(String nodeString)
 	{
 		return "";
 	}
