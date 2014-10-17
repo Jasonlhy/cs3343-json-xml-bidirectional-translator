@@ -5,8 +5,31 @@ import java.io.StringReader;
 import java.util.Stack;
 
 /**
- * Parse a json into nodes
+ * Parse a JSON string into nodes. The fist node comes with a title: "root", holding a list of nodes that are title-content pair. 
  * 
+ * Example 1, JSON Object is simple key-value pairs
+ * {id:20} converts into two nodes => 
+ * Node(title: "root")
+ *   |
+ *   |
+ *   nodeList:
+ *   [0] Node(title:"id", content:"20")
+ *   
+ *   
+ * Example 2, JSON Object contains another JSON Object
+ * {wife:{name:"jason"},age:20} converts into three nodes =>
+ * Node(title: "root")
+ *   |
+ *   |
+ *   nodeList:
+ *   [0] Node(title:"wife")
+ *       |
+ *       |
+ *       nodeList:
+ *       [0] Node(title:"name", content:"jason") 
+ *      
+ *   [1] Node(title:"age",age:"20")
+ *   
  * @author jason
  * @since 25-9-2014
  */
@@ -17,6 +40,11 @@ public class JSONParser {
 		this.json = json;
 	}
 
+	/**
+	 * Parse the JSON string into node objects.
+	 * 
+	 * @return Node The root of the node
+	 */
 	public Node parse() {
 		int asiicode = -1;
 		char c;
