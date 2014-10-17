@@ -95,7 +95,7 @@ public class TestJSONParser {
 		 
 		// TODO failed right now
 		String json = "{\"id\":19,\"home\":\"fanling\",\"wife\":[{\"name\":\"hehe\",\"phonenumber\":\"61556960\"},{\"name\":\"ricky\",\"phonenumber\":\"99999\"}]}";
-		String expected = "base: { id : 19, home : \"fanling\", wife: { name : \"hehe\", phonenumber : \"61556960\" }, wife: { name : \"ricky\", phonenumber : \"99999\" } }";
+		String expected = "root: { id : 19, home : \"fanling\", wife: { name : \"hehe\", phonenumber : \"61556960\" }, wife: { name : \"ricky\", phonenumber : \"99999\" } }";
 		JSONParser parser = new JSONParser(json);
 		
 		Node root = parser.parse();
