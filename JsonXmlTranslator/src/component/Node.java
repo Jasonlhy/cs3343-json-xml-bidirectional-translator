@@ -46,6 +46,14 @@ public class Node {
 		this.nodeList = list;
 	}
 
+	public Node(String title, Node[] list) {
+		this.title = title;
+		this.nodeList = new ArrayList<Node>();
+		for (int i=0;i<list.length;i++)
+			this.nodeList.add(list[i]);
+		
+	}
+	
 	/**
 	 * Create a new Node with filling just one child Node
 	 * 
