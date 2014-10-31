@@ -1,3 +1,6 @@
+/*
+ * This class is used for the Console interface control.
+ */
 package console;
 
 import java.io.IOException;
@@ -10,33 +13,56 @@ import utility.io.FatTommyFileReader;
 import xml.NodeToXml;
 import xml.XmlToNode;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Console.
+ */
 public class Console {
-	String transformOption;
+	
+	/** The transform option. */
+	String transformOption="X";
+	
+	/**
+	 * Instantiates a new console.
+	 */
 	public Console(){
 		
 	}
 	
+	/**
+	 * Welcome message.
+	 */
 	public void welcomeMessage(){
-		System.out.println("*** Welcome to the XML & JSON Translator ***");
-		System.out.println();
+		System.out.print("*** Welcome to the XML & JSON Translator ***\n");
+		System.out.print("\n");
 	}
 	
+	/**
+	 * Gets the transform option.
+	 * 
+	 * @return the transform option
+	 */
 	public String getTransformOption(){
 		return transformOption;
 	}
 	
+	/**
+	 * Transform option message.
+	 */
 	public void transformOptionMessage(){
-		System.out.println("Please choose the file type for the translation¡G");
-		System.out.println("XML - [X]");
-		System.out.println("JSON - [J]");
+		System.out.print("Please choose the file type for the translation¡G\n");
+		System.out.print("XML - [X]\n");
+		System.out.print("JSON - [J]\n");
 	}
 	
+	/**
+	 * Transform option.
+	 */
 	public void transformOption() {
 		Scanner scanner = new Scanner(System.in);
 		transformOption = scanner.nextLine();
 		
-		
-		if(transformOption.equals("X") || transformOption.equals("XML")){
+		if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
 			//System.out.print("X");
 			FatTommyFileReader r;
 			System.out.println("Please enter the xml file location");
@@ -57,8 +83,7 @@ public class Console {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		else if (transformOption.equals("J")|| transformOption.equals("JSON")){
+		}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
 			//System.out.print("J");
 			FatTommyFileReader r;
 			System.out.println("Please enter the json file location");
