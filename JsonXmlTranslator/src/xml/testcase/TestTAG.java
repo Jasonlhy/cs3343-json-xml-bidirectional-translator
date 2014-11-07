@@ -49,5 +49,19 @@ public class TestTAG {
 		boolean result = TAG.SHORT.isValid(test);
 		assertFalse(result);
 	}
+	
+	@Test
+	public void testContinuousTags(){
+		String test = "<tag1><tag2><tag3>";
+		boolean result = TAG.OPEN.isValid(test);
+		assertTrue(result);
+	}
+	
+	@Test
+	public void testTagInsideTag(){
+		String test = "<tag1<tag2>>";
+		boolean result = TAG.OPEN.isValid(test);
+		assertTrue(result);
+	}
 
 }

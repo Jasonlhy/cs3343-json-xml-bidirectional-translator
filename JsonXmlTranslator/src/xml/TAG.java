@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  *
  */
 public enum TAG { 
-	OPEN("<(?!/).+(?<!/)>"), CLOSE("</.+>"), SHORT("<.+/>");
+	OPEN("<(?!/)[^<>]+(?<!/)>"), CLOSE("</[^<>]+>"), SHORT("<[^<>]+/>");
 	private String regex;
 
 	private TAG(String regex){
