@@ -112,13 +112,48 @@ public class CustomLog {
 	private void genericLog(LogLevel logLevel, String s){
 		if(!isCurrLogLevel(logLevel))
 			return;
-		String record = logLevel.toString() + " " + getTime() + " " + s;
+		
+		String record = concateLogLevelName(logLevel.toString()) + " " + 
+						getTime() + " " + 
+						"[" + getPreviousClassName() + "] " +
+						s;
 		System.out.println(record);
 		try{
 			write2File(record);
 		}catch(Exception ex){
 			
 		}
+	}
+	
+	private String concateLogLevelName(String levelName){
+		
+		if(levelName.length() < 5){
+			String space = "";
+			for(int x = 0; x < (5-levelName.length()); x++)
+				space += " ";
+			return levelName + space;
+		}
+		else if(levelName.length() > 5){
+			return levelName.substring(0, 4);
+		}
+		else
+			return levelName;
+	}
+	
+	private String getPreviousClassName(){
+		String className = null;
+		int stackTraceLevel = 0;
+		StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+		
+		for(int x = 1; x < ste.length; x++){
+			String eachClassName = ste[x].getClassName();
+			if(!eachClassName.equals(this.getClass().getName())){
+				className = eachClassName;
+				break;
+			}
+		}
+		
+		return className;
 	}
 	
 	/**
