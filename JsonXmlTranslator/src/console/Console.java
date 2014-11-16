@@ -1,5 +1,5 @@
 /*
- * This class is used for the Console interface control.
+ * This class is used for the Console interface controlling.
  */
 package console;
 
@@ -56,7 +56,7 @@ public class Console {
 	}
 	
 	/**
-	 * Transform option.
+	 * Transform option handling.
 	 */
 	public void transformOption() {
 		Scanner scanner = new Scanner(System.in);
