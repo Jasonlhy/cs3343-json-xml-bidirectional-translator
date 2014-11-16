@@ -55,10 +55,10 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option xml.
+	 * Test transform option xml with input "X".
 	 */
 	@Test
-	public void testTransformOptionXML() {
+	public void testTransformOptionXMLWithX() {
 		String input = "X";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
@@ -71,11 +71,43 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option json.
+	 * Test transform option xml with input "XML".
 	 */
 	@Test
-	public void testTransformOptionJSON() {
+	public void testTransformOptionXMLWithXML() {
+		String input = "XML";
+	    System.setIn(new ByteArrayInputStream(input.getBytes()));
+	    
+	    System.setOut(new PrintStream(outContent));
+	    
+	    Console c = new Console();
+	    c.transformOption();
+	    
+	    assertEquals(outContent.toString(),"X");
+	}
+	
+	/**
+	 * Test transform option json with input "J".
+	 */
+	@Test
+	public void testTransformOptionJSONWithJ() {
 		String input = "J";
+	    System.setIn(new ByteArrayInputStream(input.getBytes()));
+	    
+	    System.setOut(new PrintStream(outContent));
+	    
+	    Console c = new Console();
+	    c.transformOption();
+	    
+	    assertEquals(outContent.toString(),"J");
+	}
+	
+	/**
+	 * Test transform option json with input "JSON".
+	 */
+	@Test
+	public void testTransformOptionJSONWithJSON() {
+		String input = "JSON";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
 	    System.setOut(new PrintStream(outContent));
