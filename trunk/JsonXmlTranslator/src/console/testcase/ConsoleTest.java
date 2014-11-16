@@ -1,5 +1,5 @@
 /*
- * This class is used for the testing of the Console interface control.
+ * This class is used for the testing of the Console interface controlling.
  */
 package console.testcase;
 
@@ -55,7 +55,7 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option xml with input "X".
+	 * Test transform option (xml) with input "X".
 	 */
 	@Test
 	public void testTransformOptionXMLWithX() {
@@ -71,7 +71,7 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option xml with input "XML".
+	 * Test transform option (xml) with input "XML".
 	 */
 	@Test
 	public void testTransformOptionXMLWithXML() {
@@ -87,7 +87,7 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option json with input "J".
+	 * Test transform option (json) with input "J".
 	 */
 	@Test
 	public void testTransformOptionJSONWithJ() {
@@ -103,7 +103,7 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option json with input "JSON".
+	 * Test transform option (json) with input "JSON".
 	 */
 	@Test
 	public void testTransformOptionJSONWithJSON() {
@@ -119,7 +119,7 @@ public class ConsoleTest {
 	}
 	
 	/**
-	 * Test transform option invalid.
+	 * Test transform option with invalid input.
 	 */
 	@Test
 	public void testTransformOptionInvalid() {
