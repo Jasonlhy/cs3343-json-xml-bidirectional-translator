@@ -41,19 +41,16 @@ public class JSONParser {
 	public JSONParser(String json) {
 		this.json = json;
 	}
-
+	
 	/**
 	 * Parse the JSON string into node objects.
 	 * 
 	 * @return Node The root of the node
 	 */
 	public Node parse() {
-		int asiicode = -1;
-		char c;
 		Stack<Node> nodeLevelStack = new Stack<Node>();
 
-		StringReader reader = new StringReader(json);
-
+		char chars [] = json.toCharArray();
 		String keyTemp = "";
 		String valueTemp = "";
 		boolean gettingKey = false;
@@ -63,63 +60,54 @@ public class JSONParser {
 		// e.g. "id" : 19
 		// when this scan though "id", the workingNode is NODE with title: "id"
 		Node workingNode = null;
-		do {
-			try {
-				asiicode = reader.read();
-				c = (char) asiicode;
-				// System.out.println(c);
-
-				if (c == '{' || c == '[') {
-					if (workingNode == null) {
-						Node rootNode = new Node("root");
-						nodeLevelStack.add(rootNode);
-					} else {
-						nodeLevelStack.add(workingNode);
-					}
-
-					gettingKey = false;
-					gettingValue = false;
-				} else if (!gettingKey && !gettingValue) {
-					if (c == '"') { // start getting key when you meet the first
-									// quote
-						gettingKey = true;
-						keyTemp = "";
-					} else if (c == ':') { // start getting value when you meet
-											// :
-						gettingValue = true;
-						valueTemp = "";
-					}
-				} else if (gettingKey) {
-					if (c == '"') { // end of getting value when you meet 2nd
-									// quote
-						workingNode = new Node(keyTemp);
-						nodeLevelStack.peek().addNode(workingNode);
-						gettingKey = false;
-					} else {
-						keyTemp += c;
-					}
-				} else if (gettingValue) {
-					if (c == ',' || c == '}' || c == ']') {
-						gettingValue = false;
-						workingNode.setContent(valueTemp.trim());
-
-						if (c == '}' || c == ']') {
-							// keep the last level
-							if (nodeLevelStack.size() > 1) {
-								nodeLevelStack.pop();
-							}
-						}
-					} else {
-						// do not accept " as a value
-						if (c != '"')
-							valueTemp += c;
-					}
+		for (char c : chars){
+			if (c == '{' || c == '[') {
+				if (workingNode == null) {
+					Node rootNode = new Node("root");
+					nodeLevelStack.add(rootNode);
+				} else {
+					nodeLevelStack.add(workingNode);
 				}
 
-			} catch (IOException e) {
-				e.printStackTrace();
+				gettingKey = false;
+				gettingValue = false;
+			} else if (!gettingKey && !gettingValue) {
+				if (c == '"') { // start getting key when you meet the first
+								// quote
+					gettingKey = true;
+					keyTemp = "";
+				} else if (c == ':') { // start getting value when you meet
+										// :
+					gettingValue = true;
+					valueTemp = "";
+				}
+			} else if (gettingKey) {
+				if (c == '"') { // end of getting value when you meet 2nd
+								// quote
+					workingNode = new Node(keyTemp);
+					nodeLevelStack.peek().addNode(workingNode);
+					gettingKey = false;
+				} else {
+					keyTemp += c;
+				}
+			} else if (gettingValue) {
+				if (c == ',' || c == '}' || c == ']') {
+					gettingValue = false;
+					workingNode.setContent(valueTemp.trim());
+
+					if (c == '}' || c == ']') {
+						// keep the last level
+						if (nodeLevelStack.size() > 1) {
+							nodeLevelStack.pop();
+						}
+					}
+				} else {
+					// do not accept " as a value
+					if (c != '"')
+						valueTemp += c;
+				}
 			}
-		} while (asiicode != -1);
+		}
 
 		Node root = (nodeLevelStack.size() == 0) ? null : nodeLevelStack.get(0);
 		return root;
