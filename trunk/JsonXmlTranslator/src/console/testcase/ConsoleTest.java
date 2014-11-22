@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class ConsoleTest {
 		Console c = new Console();
 		System.setOut(new PrintStream(outContent));
 		c.transformOptionMessage();
-		assertEquals(outContent.toString(),"Please choose the file type for the translation¡G\nXML - [X]\nJSON - [J]\n");
+		assertEquals(outContent.toString(),"Please choose the file type for the translation.\nXML - [X]\nJSON - [J]\n");
 	}
 	
 	/**
@@ -59,13 +60,27 @@ public class ConsoleTest {
 	 */
 	@Test
 	public void testTransformOptionXMLWithX() {
+		class ConsoleJson extends Console{
+			public void transformOption() {
+				Scanner scanner = new Scanner(System.in);
+				String transformOption = scanner.nextLine();
+				if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
+					System.out.print("X");
+				}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
+					System.out.print("J");
+				}else{
+					System.out.print("Please choose the translation option either XML or JSON !");
+				}
+			}
+		}
+		
 		String input = "X";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
 	    System.setOut(new PrintStream(outContent));
 	    
-	    Console c = new Console();
-	    c.transformOption();
+	    ConsoleJson cj=new ConsoleJson();
+		cj.transformOption();
 	    
 	    assertEquals(outContent.toString(),"X");
 	}
@@ -75,13 +90,27 @@ public class ConsoleTest {
 	 */
 	@Test
 	public void testTransformOptionXMLWithXML() {
+		class ConsoleJson extends Console{
+			public void transformOption() {
+				Scanner scanner = new Scanner(System.in);
+				String transformOption = scanner.nextLine();
+				if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
+					System.out.print("X");
+				}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
+					System.out.print("J");
+				}else{
+					System.out.print("Please choose the translation option either XML or JSON !");
+				}
+			}
+		}
+		
 		String input = "XML";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
 	    System.setOut(new PrintStream(outContent));
 	    
-	    Console c = new Console();
-	    c.transformOption();
+	    ConsoleJson cj=new ConsoleJson();
+		cj.transformOption();
 	    
 	    assertEquals(outContent.toString(),"X");
 	}
@@ -91,13 +120,27 @@ public class ConsoleTest {
 	 */
 	@Test
 	public void testTransformOptionJSONWithJ() {
+		class ConsoleJson extends Console{
+			public void transformOption() {
+				Scanner scanner = new Scanner(System.in);
+				String transformOption = scanner.nextLine();
+				if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
+					System.out.print("X");
+				}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
+					System.out.print("J");
+				}else{
+					System.out.print("Please choose the translation option either XML or JSON !");
+				}
+			}
+		}
+		
 		String input = "J";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
 	    System.setOut(new PrintStream(outContent));
 	    
-	    Console c = new Console();
-	    c.transformOption();
+	    ConsoleJson cj=new ConsoleJson();
+		cj.transformOption();
 	    
 	    assertEquals(outContent.toString(),"J");
 	}
@@ -107,13 +150,27 @@ public class ConsoleTest {
 	 */
 	@Test
 	public void testTransformOptionJSONWithJSON() {
+		class ConsoleJson extends Console{
+			public void transformOption() {
+				Scanner scanner = new Scanner(System.in);
+				String transformOption = scanner.nextLine();
+				if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
+					System.out.print("X");
+				}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
+					System.out.print("J");
+				}else{
+					System.out.print("Please choose the translation option either XML or JSON !");
+				}
+			}
+		}
+		
 		String input = "JSON";
 	    System.setIn(new ByteArrayInputStream(input.getBytes()));
 	    
 	    System.setOut(new PrintStream(outContent));
 	    
-	    Console c = new Console();
-	    c.transformOption();
+	    ConsoleJson cj=new ConsoleJson();
+		cj.transformOption();
 	    
 	    assertEquals(outContent.toString(),"J");
 	}
