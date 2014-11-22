@@ -1,12 +1,14 @@
-package component.testcase;
+package xml;
 
 import static org.junit.Assert.*;
 
 import java.util.List;
+
+import json.JSONParser;
+
 import org.junit.Test;
-import component.JSONParser;
+
 import component.Node;
-import component.XMLWriter;
 
 public class TestXMLWriter {
 

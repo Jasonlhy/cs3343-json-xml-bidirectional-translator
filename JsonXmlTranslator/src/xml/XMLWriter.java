@@ -1,6 +1,8 @@
-package component;
+package xml;
 
 import java.util.*;
+
+import component.Node;
 
 public class XMLWriter {
 	

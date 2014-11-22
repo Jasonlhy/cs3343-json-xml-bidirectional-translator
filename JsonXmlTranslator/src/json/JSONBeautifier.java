@@ -1,6 +1,8 @@
-package component;
+package json;
 
-import json.NodeToJSON;
+import component.Node;
+
+import utility.log.CustomLog;
 
 /**
  * Beautifier a JSON output with indentation
@@ -57,20 +59,30 @@ public class JSONBeautifier {
 	 * @return a JSONString with indentation
 	 */
 	public String beautifierUseString(String jsonString) {
+		
 		int intentLevel = 0;
 		String intentedString = "";
+		String eachLine = "";
 		for (int idx = 0; idx < jsonString.length(); idx++) {
 			char c = jsonString.charAt(idx);
 			if (c == '{') {
+				intentedString += eachLine.trim();
 				intentLevel += 1;
-				intentedString += getBeautifulString(c, intentLevel);
+				intentedString += getNextLineCharacter(c, intentLevel);
+				eachLine = "";
 			} else if (c == '}') {
+				intentedString += eachLine.trim();
 				intentLevel -= 1;
-				intentedString += getBeautifulString(c, intentLevel);
+				intentedString += getNextLineCharacter(c, intentLevel);
+				eachLine = "";
 			} else if (c == ',') {
-				intentedString += getBeautifulString(c, intentLevel);
+				intentedString += eachLine.trim();
+				intentedString += getNextLineCharacter(c, intentLevel);
+				eachLine = "";
 			} else {
-				intentedString += getBeautifulString(c, intentLevel);
+				// Skip line break, tab... etc
+				if (isPrintableCharacter(c))
+					eachLine += c;
 			}
 		}
 
@@ -78,7 +90,20 @@ public class JSONBeautifier {
 	}
 
 	/**
-	 * Get beautiful string with a character
+	 * Test whether it is printable character
+	 * 
+	 * @param c
+	 *            The characeter
+	 * @return true if it is a printable character
+	 */
+	public boolean isPrintableCharacter(char c) {
+		int asiiNumber = (int) c;
+
+		return (asiiNumber >= 32);
+	}
+
+	/**
+	 * Get character following end line character and next line intent
 	 * 
 	 * @param theChar
 	 *            The character
@@ -86,7 +111,7 @@ public class JSONBeautifier {
 	 *            the intent level
 	 * @return a beautiful string
 	 */
-	public String getBeautifulString(char theChar, int intentLevel) {
+	public String getNextLineCharacter(char theChar, int intentLevel) {
 		String outputString = "";
 		// for open bracket and common:
 		// print the char at current level
@@ -100,10 +125,10 @@ public class JSONBeautifier {
 		// just print the char
 		if (theChar == '{' || theChar == ',') {
 			outputString += theChar;
-			outputString += System.lineSeparator();
+			outputString += "\n";
 			outputString += createIntent(intentLevel);
 		} else if (theChar == '}') {
-			outputString += System.lineSeparator();
+			outputString += "\n";
 			outputString += createIntent(intentLevel);
 			outputString += theChar;
 		} else {
@@ -132,8 +157,11 @@ public class JSONBeautifier {
 	public static void main(String[] args) {
 		JSONBeautifier b = new JSONBeautifier();
 		String r;
-		r = b.beautifierUseString("{ id : 19, home : fanling }");
+		// r = b.beautifierUseString("{ \r\n id : 19, home : fanling }");
+		r = b.beautifierUseString("{\r\nid: 你好}");
 		System.out.println(r);
+
+		// r = b.endLineCharacter('\r');
 		// r =
 		// b.beautifier("{ id : 19, home : fanling, wife: { name : hehe, phonenumber : 61556960 }, uni : city }");
 		// System.out.println(r);
