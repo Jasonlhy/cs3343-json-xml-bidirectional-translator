@@ -13,6 +13,7 @@ import utility.io.FatTommyFileWriter;
 import xml.NodeToXml;
 import xml.XMLWriter;
 import xml.XmlToNode;
+import json.*;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -190,9 +191,12 @@ public class Console {
 		XmlToNode xmlToNode = new XmlToNode();
 		Node root = xmlToNode.Translate(xmlContent);
 		System.out.println("root: " + root);
-		XMLWriter xmlWriter = new XMLWriter();
-		xmlWriter.writeXML(root);
-		return xmlWriter.writeXML(root);
+		NodeToJSON toJson = new NodeToJSON();
+		
+		List<String> output = new ArrayList<String>();
+		output.add(toJson.toJSONString(root));
+		
+		return output;
 	}
 	
 	/**
