@@ -1,6 +1,5 @@
 package component;
 
-import java.util.List;
 import java.util.*;
 
 /**
@@ -18,7 +17,7 @@ import java.util.*;
  * 
  * @author Chan Chi Hang (52641937) (Give me a call if you don't understand :-))
  */
-public class Node {
+public class Node{
 	private String title;
 	private String content;
 	private List<Node> nodeList;
@@ -308,4 +307,25 @@ public class Node {
 
 		return s;
 	}
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		boolean sameReference = super.equals(obj);
+		if (sameReference){
+			return true;
+		}
+		
+		// same toString but diff obj
+		if (obj instanceof Node){
+			Node node = (Node) obj;
+			if (node != null){
+				return this.toString().equals(node.toString());
+			}
+		}
+			
+		return false;
+	}
+	
+	
 }
