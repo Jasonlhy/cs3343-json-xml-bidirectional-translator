@@ -22,6 +22,7 @@ public class Node {
 	private String title;
 	private String content;
 	private List<Node> nodeList;
+	private Node nextNode = null;
 
 	/**
 	 * Create a new empty node
@@ -43,14 +44,21 @@ public class Node {
 	 */
 	public Node(String title, List<Node> list) {
 		this.title = title;
+		
+		for (int i=0;i<list.size()-1;i++)
+			list.get(i).nextNode = list.get(i+1);
+		
 		this.nodeList = list;
 	}
 
 	public Node(String title, Node[] list) {
 		this.title = title;
 		this.nodeList = new ArrayList<Node>();
-		for (int i=0;i<list.length;i++)
+		for (int i=0;i<list.length;i++) {
+			if (i>0)
+				list[i].nextNode = nodeList.get(nodeList.size()-1);
 			this.nodeList.add(list[i]);
+		}
 		
 	}
 	
@@ -92,6 +100,14 @@ public class Node {
 		return title;
 	}
 
+	/**
+	 * Get the reference of next Node <b>May return null</b>
+	 * @return Node
+	 */
+	public Node getNextNode() {
+		return nextNode;
+	}
+	
 	/**
 	 * Get the Content string of the Node
 	 * <p>
@@ -236,6 +252,7 @@ public class Node {
 		if (nodeList == null)
 			nodeList = new ArrayList<Node>();
 
+		nodeList.get(nodeList.size()-1).nextNode = node;
 		nodeList.add(node);
 		content = null;
 	}
