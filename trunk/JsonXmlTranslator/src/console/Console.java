@@ -24,6 +24,8 @@ public class Console {
 	/** The transform option. */
 	String transformOption="X";
 	
+	static String transformedOutput="";
+	
 	/**
 	 * Instantiates a new console.
 	 */
@@ -46,6 +48,15 @@ public class Console {
 	 */
 	public String getTransformOption(){
 		return transformOption;
+	}
+	
+	/**
+	 * Gets the transformed output.
+	 * 
+	 * @return the transformed output
+	 */
+	public String getTransformedOutput(){
+		return transformedOutput;
 	}
 	
 	/**
@@ -76,6 +87,8 @@ public class Console {
 				transformOptionXMLtoJSON(xmlContent);
 				
 				setFileOutput(jsonFileLocation,transformOptionXMLtoJSON(xmlContent));
+				
+				System.out.println("Transform the XML to JSON successful.");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -92,6 +105,8 @@ public class Console {
 				transformOptionJSONtoXML(jsonContent);
 				
 				setFileOutput(xmlFileLocation,transformOptionJSONtoXML(jsonContent));
+				
+				System.out.println("Transform the JSON to XML successful.");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -166,14 +181,20 @@ public class Console {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public List<String> transformOptionJSONtoXML(String jsonContent) throws IOException {
+	public static List<String> transformOptionJSONtoXML(String jsonContent) throws IOException {
 		JSONParser parser = new JSONParser(jsonContent);
 		Node root = parser.parse();
-		System.out.println("-------- root: -------" + root);
+		//System.out.println("-------- root: -------" + root);
 		NodeToXml nodeToXML = new NodeToXml();
 		//nodeToXML.outputXMLFile(root);
+		
+		transformedOutput=nodeToXML.outputXMLFile(root);
+		
+		System.out.println("Transform the JSON to XML successful.");
+		
 		List<String> result=new ArrayList<String>();
 		result.add(nodeToXML.outputXMLFile(root));
+		
 		return result;
 		//return nodeToXML.outputXMLFile(root);
 	}
@@ -187,12 +208,16 @@ public class Console {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public List<String> transformOptionXMLtoJSON(String xmlContent) throws IOException {
+	public static List<String> transformOptionXMLtoJSON(String xmlContent) throws IOException {
 		XmlToNode xmlToNode = new XmlToNode();
 		Node root = xmlToNode.Translate(xmlContent);
-		System.out.println("root: " + root);
+		//System.out.println("root: " + root);
 		NodeToJSON toJson = new NodeToJSON();
 		
+		transformedOutput=toJson.toJSONString(root);
+		
+		System.out.println("Transform the XML to JSON successful.");
+				
 		List<String> output = new ArrayList<String>();
 		output.add(toJson.toJSONString(root));
 		
@@ -235,6 +260,7 @@ public class Console {
 				if(convertMode=="JSONtoXML"){
 					try {
 						console.transformOptionJSONtoXML(inputContent);
+						System.out.println(console.getTransformedOutput());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -242,6 +268,7 @@ public class Console {
 				}else if(convertMode=="XMLtoJSON"){
 					try {
 						console.transformOptionXMLtoJSON(inputContent);
+						System.out.println(console.getTransformedOutput());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -260,16 +287,16 @@ public class Console {
 			if("\\F".equals(mode.toUpperCase())){
 				if(convertMode=="JSONtoXML"){
 					try {
-						console.transformOptionJSONtoXML(console.getFileContent(inputFileLocation));
-						//console.setFileOutput(outputFileLocation, transformOptionJSONtoXML(console.getFileContent(inputFileLocation)));
+						//console.transformOptionJSONtoXML(console.getFileContent(inputFileLocation));
+						console.setFileOutput(outputFileLocation, transformOptionJSONtoXML(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}else if(convertMode=="XMLtoJSON"){
 					try {
-						console.transformOptionXMLtoJSON(console.getFileContent(inputFileLocation));
-						//console.setFileOutput(outputFileLocation, transformOptionXMLtoJSON(console.getFileContent(inputFileLocation)));
+						//console.transformOptionXMLtoJSON(console.getFileContent(inputFileLocation));
+						console.setFileOutput(outputFileLocation, transformOptionXMLtoJSON(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
