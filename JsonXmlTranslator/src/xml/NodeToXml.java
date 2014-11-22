@@ -17,13 +17,15 @@ public class NodeToXml {
 			for	(Node n:nodeList)
 				outputString = TurnNodeIntoXml(n,outputString);
 		}
-		else
+		else{
+			if(currentNode.getContent()!=null)
 			outputString += currentNode.getContent();
+		}
 		outputString += "</" + currentNode.getTitle() + ">";
 		return outputString;
 	}
 	
-	public void outputXMLFile(Node rootNode){		
-		System.out.println(TurnNodeIntoXml(rootNode));
+	public String outputXMLFile(Node rootNode){		
+		return TurnNodeIntoXml(rootNode);
 	}
 }
