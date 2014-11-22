@@ -10,7 +10,7 @@ public class TestXmlToNode {
 
 	@Test
 	public void test() {
-		String testString = "<A><B><D></D></B><C><l>y</l></C></A>";
+		String testString = "<A><B>abc</B></A>";
 		XmlToNode testTranslator = new XmlToNode();
 		Node testNode = testTranslator.Translate(testString);
 		Node answerANode = new Node("A");
