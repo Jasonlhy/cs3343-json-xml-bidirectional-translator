@@ -310,6 +310,10 @@ public class Node{
 
 	
 	@Override
+	/**
+	 * Override euqlas method to check equals of different object. (Same object but diff reference)
+	 * @return boolean of if it is equals
+	 */
 	public boolean equals(Object obj) {
 		boolean sameReference = super.equals(obj);
 		if (sameReference){
