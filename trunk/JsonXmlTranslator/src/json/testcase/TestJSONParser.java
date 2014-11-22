@@ -1,10 +1,10 @@
-package component.testcase;
+package json.testcase;
 
 import static org.junit.Assert.*;
+import json.JSONParser;
 
 import org.junit.Test;
 
-import component.JSONParser;
 import component.Node;
 
 /**

@@ -1,8 +1,10 @@
-package component;
+package json;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Stack;
+
+import component.Node;
 
 /**
  * Parse a JSON string into nodes. The fist node comes with a title: "root", holding a list of nodes that are title-content pair. 

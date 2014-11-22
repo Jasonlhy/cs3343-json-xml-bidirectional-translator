@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Scanner;
 
-import component.JSONParser;
+import json.JSONParser;
 import component.Node;
-import component.XMLWriter;
 import utility.io.FatTommyFileReader;
 import utility.io.FatTommyFileWriter;
 import xml.NodeToXml;
+import xml.XMLWriter;
 import xml.XmlToNode;
 
 // TODO: Auto-generated Javadoc

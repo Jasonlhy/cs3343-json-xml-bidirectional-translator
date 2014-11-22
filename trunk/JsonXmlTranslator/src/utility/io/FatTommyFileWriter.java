@@ -1,6 +1,6 @@
 package utility.io;
 
-import java.awt.List;
+import java.util.List;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,14 +23,14 @@ public class FatTommyFileWriter implements TommyFileWriter{
 		this.outPath=filePath;
 	}
 	
-	public void WriteToFile(List input) throws IOException{
+	public void WriteToFile(List<String> input) throws IOException{
 		
 		if(input!=null){
 			FileWriter output = new FileWriter(outPath);
 			BufferedWriter writer = new BufferedWriter(output);
 	 
-			for(int i = 0 ; i <input.getSize().height;i++){
-				writer.write(input.getItem(i));
+			for(int i = 0 ; i <input.size();i++){
+				writer.write(input.get(i));
 				writer.newLine();
 				
 			}
