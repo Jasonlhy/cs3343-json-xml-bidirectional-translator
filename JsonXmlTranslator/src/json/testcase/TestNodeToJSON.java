@@ -30,8 +30,14 @@ public class TestNodeToJSON {
 		Node[] arr2 = {f,g};
 		Node companyInfoNode = new Node("Info",arr2);
 		
+		Node h = new Node("StaffNum", "1000");
+		Node i = new Node("Area", "5km");
 		
-		Node[] all = {companyInfoNode,person,person};
+		Node[] arr3 = {f,g};
+		Node companyStatNode = new Node("Statistics",arr3);		
+		
+		
+		Node[] all = {companyInfoNode,companyStatNode,person,person,person};
 		Node company = new Node("Company",all);
 		
 		System.out.println(NodeToJSON.toJSONString(company));

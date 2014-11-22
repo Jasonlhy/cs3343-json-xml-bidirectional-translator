@@ -17,7 +17,7 @@ public class NodeToJSON {
 		//Global Start Tag
 		result+="{\n";
 		
-		result+=toJSONString(node, false, true);
+		result+=toJSONString(node, false, true, true);
 		
 		//Global End Tag
 		result+="\n}";
@@ -25,17 +25,19 @@ public class NodeToJSON {
 		return result;
 	}
 	
-	private static String toJSONString(Node node, boolean isArray, boolean isFirst) {
+	private static String toJSONString(Node node, boolean isArray, boolean upperIsFirst, boolean isFirst) {
 		
 		String result = "";
 		
-		if (isFirst)
+		if (upperIsFirst)
 			result+="";
 		else 
 			result+=",\n";
 		
-		if (isArray) //"key": [ {......
-			result += "\"" + node.getTitle() + "\": [\n{";
+		if (isArray && isFirst) //"key": [ {......
+			result += "\"" + node.getTitle() + "\": [\n{\n";
+		else if (isArray && !isFirst)
+			result += "{\n";
 		else if (!node.hasChildNode())
 			result += "\"" + node.getTitle() + "\": "; // "key": {.....
 		else
@@ -50,28 +52,23 @@ public class NodeToJSON {
 				//Skip node that has been parsed
 				if (!loaded.contains(node.getChildNode(i).getTitle())) {
 					loaded.add(node.getChildNode(i).getTitle());
-					result += ""  + toJSONString(node.getChildNode(i),false,(i==0));
 					
 					//Loop to Check if there is any node with same node name -> json array
 					boolean duplicate = false;
-					boolean firstDuplicate = true;
 					for (int j=i+1;j<node.getChildNodeLength();j++) {
 						//Case 1: Duplicate Node detected
 						if (node.getChildNode(i).getTitle().equals(node.getChildNode(j).getTitle())) {
 							duplicate = true;
-							if (firstDuplicate)
-								result += toJSONString(node.getChildNode(i),duplicate, firstDuplicate);
-							firstDuplicate = false;
-							result += toJSONString(node.getChildNode(j),duplicate, firstDuplicate);
+							result += toJSONString(node.getChildNode(i),duplicate, (i==0), (j==i+1));
 						}
 					}
 					
 					//Close array tag for duplicate node (Array)
 					if (duplicate)
 						result+="\n]";
-					//else
+					else
 						//Case 2: Non Duplicate Node (Single Node)
-						//result += toJSONString(node.getChildNode(i),false, false);
+						result += toJSONString(node.getChildNode(i),false, (i==0),(i==0));
 				}
 				else
 					continue;
