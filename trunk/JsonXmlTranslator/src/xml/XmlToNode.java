@@ -31,12 +31,12 @@ public class XmlToNode {
 		String nodeString;
 		if(!mostLeftisNode(xmlString.toString()))
 		{
-			System.out.println("May be String value");
+			//System.out.println("May be String value");
 			return null;
 			//exception
 		}
 		int nodeEnd = NodeStartAndEnd(xmlString.toString())[1];
-		System.err.println(nodeEnd);
+		//System.err.println(nodeEnd);
 		nodeString = xmlString.substring(0,nodeEnd);
 		if(TAG.CLOSE.isValid(nodeString))
 		{
@@ -47,10 +47,10 @@ public class XmlToNode {
 		}
 		//remainder = xmlString.substring(nodeEnd+1);
 		xmlString.delete(0, nodeEnd);
-		System.err.println(xmlString);
+		//System.err.println(xmlString);
 		currentNode.setTitle(getNodename(nodeString));
 		follower.push(currentNode.getTitle());
-		System.err.println(follower.peek());
+		//System.err.println(follower.peek());
 		while(true)
 		{
 			if(TAG.OPEN.isValid(nodeString)) //OPEN Node confirmed. 
@@ -71,14 +71,14 @@ public class XmlToNode {
 				{
 					if(follower.peek().equals(currentNode.getTitle()))
 					{
-						System.out.println("Finish One Node");
+						//System.out.println("Finish One Node");
 						follower.pop();
 						xmlString.delete(0, nodeEnd);
 						break;
 					}
 				}
 				//xmlString.delete(0, nodeEnd);
-				System.err.println("one round: "+xmlString);
+				//System.err.println("one round: "+xmlString);
 			}
 		}
 		return currentNode;
