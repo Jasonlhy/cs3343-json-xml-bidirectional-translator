@@ -31,10 +31,25 @@ public class TestNodeToJSON {
 		Node companyInfoNode = new Node("Info",arr2);
 		
 		
-		Node[] all = {companyInfoNode,person,person,person};
+		Node[] all = {companyInfoNode,person,person};
 		Node company = new Node("Company",all);
 		
 		System.out.println(NodeToJSON.toJSONString(company));
 	}
 
 }
+
+/*
+<company>
+<info>
+	<name>CityU</name>
+	<Address>KLT</Address>
+</info>
+<Person>
+	<Name>Ricky</Name>
+	<Sat.>Doctor</Sat.>
+	<Position>Prof.</Position>
+	<Dept>CS</Dept>
+</Person>
+</company>
+*/

@@ -15,29 +15,31 @@ public class NodeToJSON {
 		String result = "";
 		
 		//Global Start Tag
-		result+="{";
+		result+="{\n";
 		
 		result+=toJSONString(node, false, true);
 		
 		//Global End Tag
-		result+="}";
+		result+="\n}";
 		
 		return result;
 	}
 	
 	private static String toJSONString(Node node, boolean isArray, boolean isFirst) {
 		
-		String result = "\n";
+		String result = "";
 		
-		if (!isFirst)
-			result+=",\n";
+		if (isFirst)
+			result+="";
 		else 
-			result+="\n";
+			result+=",\n";
 		
 		if (isArray) //"key": [ {......
 			result += "\"" + node.getTitle() + "\": [\n{";
+		else if (!node.hasChildNode())
+			result += "\"" + node.getTitle() + "\": "; // "key": {.....
 		else
-			result += "\"" + node.getTitle() + "\": {"; // "key": {.....
+			result += "\"" + node.getTitle() + "\": {\n"; // "key": {.....
 
 		//Determine if there is any child node
 		if (node.hasChildNode()) {
@@ -48,7 +50,7 @@ public class NodeToJSON {
 				//Skip node that has been parsed
 				if (!loaded.contains(node.getChildNode(i).getTitle())) {
 					loaded.add(node.getChildNode(i).getTitle());
-					result += "\n"  + toJSONString(node.getChildNode(i));
+					result += ""  + toJSONString(node.getChildNode(i),false,(i==0));
 					
 					//Loop to Check if there is any node with same node name -> json array
 					boolean duplicate = false;
@@ -67,9 +69,9 @@ public class NodeToJSON {
 					//Close array tag for duplicate node (Array)
 					if (duplicate)
 						result+="\n]";
-					else
+					//else
 						//Case 2: Non Duplicate Node (Single Node)
-						result += toJSONString(node.getChildNode(i),false, false);
+						//result += toJSONString(node.getChildNode(i),false, false);
 				}
 				else
 					continue;
@@ -78,7 +80,11 @@ public class NodeToJSON {
 		else
 			result += "\"" + node.getContent() + "\"";
 
-		result+="\n}";
+		if (node.hasChildNode())
+			result+="\n}";
+		else
+			result+="";
+		
 		return result;
 	}
 }
