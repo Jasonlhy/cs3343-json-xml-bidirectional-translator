@@ -34,8 +34,8 @@ public class TestXMLWriter {
 		for (String s : resultant) {
 			resultantStr += s;
 		}
-		assertEquals(resultantStr, "<root><id>19</id><home>\"fanling\"</home><wife><name>\"hehe\"</name>"
-								 + "<phonenumber>\"61556960\"</phonenumber></wife></root>");
+		assertEquals(resultantStr, "<root><id>19</id><home>fanling</home><wife><name>hehe</name>"
+								 + "<phonenumber>61556960</phonenumber></wife></root>");
 	}
 
 }
