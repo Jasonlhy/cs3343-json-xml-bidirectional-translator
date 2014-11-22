@@ -5,7 +5,6 @@ package console;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.Scanner;
 
 import json.JSONParser;
 import component.Node;
@@ -73,11 +72,9 @@ public class Console {
 
 			String xmlContent = getFileContent(xmlFileLocation);
 			try {
-				List output = transformOptionJSONtoXML(xmlContent);
+				transformOptionXMLtoJSON(xmlContent);
 				
-				FatTommyFileWriter w;
-				w = new FatTommyFileWriter(jsonFileLocation);
-				w.WriteToFile(output);
+				setFileOutput(jsonFileLocation,transformOptionXMLtoJSON(xmlContent));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -92,6 +89,8 @@ public class Console {
 			String jsonContent = getFileContent(jsonFileLocation);
 			try {
 				transformOptionJSONtoXML(jsonContent);
+				
+				setFileOutput(xmlFileLocation,transformOptionJSONtoXML(jsonContent));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -104,6 +103,28 @@ public class Console {
 		scanner.close();
 	}
 	
+	/**
+	 * Sets the file output.
+	 * 
+	 * @param path
+	 *            the path
+	 * @param content
+	 *            the content
+	 * @throws IOException 
+	 */
+	public void setFileOutput(String path,List content) throws IOException{
+		FatTommyFileWriter w;
+		w = new FatTommyFileWriter(path);
+		w.WriteToFile(content);
+	}
+	
+	/**
+	 * Gets the file content.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return the file content
+	 */
 	public String getFileContent(String path){
 		FatTommyFileReader r;
 		r = new FatTommyFileReader(path);
@@ -117,6 +138,13 @@ public class Console {
 		return content;
 	}
 	
+	/**
+	 * Check transform option byfile.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return the string
+	 */
 	public String checkTransformOptionByfile(String path){
 		String content = getFileContent(path);
 		char contentType = content.charAt(0);
@@ -131,26 +159,45 @@ public class Console {
 
 	/**
 	 * Transform option (JSON to XML) handling.
+	 * 
+	 * @param jsonContent
+	 *            the json content
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public List<String> transformOptionJSONtoXML(String jsonContent) throws IOException {
 		JSONParser parser = new JSONParser(jsonContent);
 		Node root = parser.parse();
-		//System.out.println("-------- root: -------" + root);
+		System.out.println("-------- root: -------" + root);
 		NodeToXml nodeToXML = new NodeToXml();
-		return nodeToXML.outputXMLFile(root);
+		//nodeToXML.outputXMLFile(root);
+		List<String> result=new ArrayList<String>();
+		result.add(nodeToXML.outputXMLFile(root));
+		return result;
+		//return nodeToXML.outputXMLFile(root);
 	}
 	
 	/**
 	 * Transform option (XML to JSON) handling.
+	 * 
+	 * @param xmlContent
+	 *            the xml content
+	 * @return 
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public List<String> transformOptionXMLtoJSON(String xmlContent) throws IOException {
 		XmlToNode xmlToNode = new XmlToNode();
 		Node root = xmlToNode.Translate(xmlContent);
 		System.out.println("root: " + root);
 		XMLWriter xmlWriter = new XMLWriter();
+		xmlWriter.writeXML(root);
 		return xmlWriter.writeXML(root);
 	}
 	
+	/**
+	 * Input arguments error.
+	 */
 	public void inputArgumentsError(){
 		System.out.println("Please input valid arguments:");
 		System.out.println("1.	Do not input any argument.");
@@ -158,6 +205,12 @@ public class Console {
 		System.out.println("3.	\\f inputFilePath outputFilePath");
 	}
 	
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            the arguments
+	 */
 	public static void main(String [] args){
 		Console console = new Console();
 		console.welcomeMessage();
@@ -204,6 +257,7 @@ public class Console {
 				if(convertMode=="JSONtoXML"){
 					try {
 						console.transformOptionJSONtoXML(console.getFileContent(inputFileLocation));
+						//console.setFileOutput(outputFileLocation, transformOptionJSONtoXML(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -211,6 +265,7 @@ public class Console {
 				}else if(convertMode=="XMLtoJSON"){
 					try {
 						console.transformOptionXMLtoJSON(console.getFileContent(inputFileLocation));
+						//console.setFileOutput(outputFileLocation, transformOptionXMLtoJSON(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
