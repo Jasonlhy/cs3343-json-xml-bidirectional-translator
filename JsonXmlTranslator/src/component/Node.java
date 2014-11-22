@@ -252,7 +252,8 @@ public class Node {
 		if (nodeList == null)
 			nodeList = new ArrayList<Node>();
 
-		nodeList.get(nodeList.size()-1).nextNode = node;
+		if (nodeList.size()>1)
+			nodeList.get(nodeList.size()-1).nextNode = node;
 		nodeList.add(node);
 		content = null;
 	}
