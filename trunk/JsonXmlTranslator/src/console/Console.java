@@ -17,7 +17,7 @@ import json.*;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Console.
+ * The Class Console. 
  */
 public class Console {
 	
