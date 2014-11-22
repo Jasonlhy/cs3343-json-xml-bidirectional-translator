@@ -20,7 +20,6 @@ import json.*;
  * The Class Console. 
  */
 public class Console {
-	
 	/** The transform option. */
 	String transformOption="X";
 	
