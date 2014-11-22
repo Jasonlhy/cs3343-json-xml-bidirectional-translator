@@ -4,12 +4,14 @@
 package console;
 
 import java.io.IOException;
+import java.util.*;
 import java.util.Scanner;
 
 import component.JSONParser;
 import component.Node;
 import component.XMLWriter;
 import utility.io.FatTommyFileReader;
+import utility.io.FatTommyFileWriter;
 import xml.NodeToXml;
 import xml.XmlToNode;
 
@@ -50,7 +52,7 @@ public class Console {
 	 * Transform option message.
 	 */
 	public void transformOptionMessage(){
-		System.out.print("Please choose the file type for the translation¡G\n");
+		System.out.print("Please choose the file type for the translation.\n");
 		System.out.print("XML - [X]\n");
 		System.out.print("JSON - [J]\n");
 	}
@@ -64,42 +66,32 @@ public class Console {
 		
 		if(transformOption.toUpperCase().equals("X") || transformOption.toUpperCase().equals("XML")){
 			//System.out.print("X");
-			FatTommyFileReader r;
 			System.out.println("Please enter the xml file location");
 			String xmlFileLocation = scanner.nextLine();
 			System.out.println("Please enter the destination file location");
 			String jsonFileLocation = scanner.nextLine(); // not used right now
-			
+
+			String xmlContent = getFileContent(xmlFileLocation);
 			try {
-				r = new FatTommyFileReader(xmlFileLocation);
-				String xmlContent = r.readWholeFile();
-				System.out.println("xml content: "+ xmlContent);
-				XmlToNode xmlToNode = new XmlToNode();
-				Node root = xmlToNode.Translate(xmlContent);
-				System.out.println("root: " + root);
-				XMLWriter xmlWriter = new XMLWriter();
-				xmlWriter.writeXML(root);
+				List output = transformOptionJSONtoXML(xmlContent);
+				
+				FatTommyFileWriter w;
+				w = new FatTommyFileWriter(jsonFileLocation);
+				w.WriteToFile(output);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else if (transformOption.toUpperCase().equals("J")|| transformOption.toUpperCase().equals("JSON")){
 			//System.out.print("J");
-			FatTommyFileReader r;
 			System.out.println("Please enter the json file location");
 			String jsonFileLocation = scanner.nextLine();
 			System.out.println("Please enter the xml file location");
 			String xmlFileLocation = scanner.nextLine(); // not used right now
 			
+			String jsonContent = getFileContent(jsonFileLocation);
 			try {
-				r = new FatTommyFileReader(jsonFileLocation);
-				String jsonContent = r.readWholeFile();
-				//System.out.println("json content: "+ jsonContent);
-				JSONParser parser = new JSONParser(jsonContent);
-				Node root = parser.parse();
-				//System.out.println("-------- root: -------" + root);
-				NodeToXml nodeToXML = new NodeToXml();
-				nodeToXML.outputXMLFile(root);
+				transformOptionJSONtoXML(jsonContent);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -112,10 +104,125 @@ public class Console {
 		scanner.close();
 	}
 	
+	public String getFileContent(String path){
+		FatTommyFileReader r;
+		r = new FatTommyFileReader(path);
+		String content="";
+		try {
+			content = r.readWholeFile();		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return content;
+	}
+	
+	public String checkTransformOptionByfile(String path){
+		String content = getFileContent(path);
+		char contentType = content.charAt(0);
+		if(contentType=='{'){
+			return "JSONtoXML";
+		}else if(contentType=='<'){
+			return "XMLtoJSON";
+		}else{
+			return "false";
+		}
+	}
+
+	/**
+	 * Transform option (JSON to XML) handling.
+	 */
+	public List<String> transformOptionJSONtoXML(String jsonContent) throws IOException {
+		JSONParser parser = new JSONParser(jsonContent);
+		Node root = parser.parse();
+		//System.out.println("-------- root: -------" + root);
+		NodeToXml nodeToXML = new NodeToXml();
+		return nodeToXML.outputXMLFile(root);
+	}
+	
+	/**
+	 * Transform option (XML to JSON) handling.
+	 */
+	public List<String> transformOptionXMLtoJSON(String xmlContent) throws IOException {
+		XmlToNode xmlToNode = new XmlToNode();
+		Node root = xmlToNode.Translate(xmlContent);
+		System.out.println("root: " + root);
+		XMLWriter xmlWriter = new XMLWriter();
+		return xmlWriter.writeXML(root);
+	}
+	
+	public void inputArgumentsError(){
+		System.out.println("Please input valid arguments:");
+		System.out.println("1.	Do not input any argument.");
+		System.out.println("2.	\\s [{JSON}|<XML>]");
+		System.out.println("3.	\\f inputFilePath outputFilePath");
+	}
+	
 	public static void main(String [] args){
 		Console console = new Console();
 		console.welcomeMessage();
-		console.transformOptionMessage();
-		console.transformOption();
+		
+		if(args.length==0){
+			console.transformOptionMessage();
+			console.transformOption();
+		}else if(args.length==2){
+			String mode=args[0];
+			String inputContent=args[1];
+			String convertMode="";
+			if(inputContent.replaceAll("\\s+","").charAt(0)=='{'){
+				convertMode="JSONtoXML";
+			}else if(inputContent.replaceAll("\\s+","").charAt(0)=='<'){
+				convertMode="XMLtoJSON";
+			}
+			if("\\S".equals(mode.toUpperCase())){
+				if(convertMode=="JSONtoXML"){
+					try {
+						console.transformOptionJSONtoXML(inputContent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else if(convertMode=="XMLtoJSON"){
+					try {
+						console.transformOptionXMLtoJSON(inputContent);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else{
+					console.inputArgumentsError();
+				}
+			}else{
+				console.inputArgumentsError();
+			}
+		}else if(args.length==3){
+			String mode=args[0];
+			String inputFileLocation=args[1];
+			String outputFileLocation=args[2];
+			String convertMode=console.checkTransformOptionByfile(inputFileLocation);
+			if("\\F".equals(mode.toUpperCase())){
+				if(convertMode=="JSONtoXML"){
+					try {
+						console.transformOptionJSONtoXML(console.getFileContent(inputFileLocation));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else if(convertMode=="XMLtoJSON"){
+					try {
+						console.transformOptionXMLtoJSON(console.getFileContent(inputFileLocation));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else{
+					console.inputArgumentsError();
+				}
+			}else{
+				console.inputArgumentsError();
+			}
+		}else{
+			console.inputArgumentsError();
+		}
 	}
 }
