@@ -108,7 +108,9 @@ public class JSONParser {
 							}
 						}
 					} else {
-						valueTemp += c;
+						// do not accept " as a value
+						if (c != '"')
+							valueTemp += c;
 					}
 				}
 

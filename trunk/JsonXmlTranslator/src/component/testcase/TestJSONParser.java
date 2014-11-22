@@ -29,9 +29,13 @@ public class TestJSONParser {
 
 	@Test
 	public void testSimpleParse2NoSpace() {
-		String expected = "root: { id : 19, home : \"fanling\" }";
+		String expected = "root: { id : 19, home : fanling }";
 		JSONParser parser = new JSONParser("{\"id\":19,\"home\":\"fanling\"}");
 		Node root = parser.parse();
+		System.out.println("hihi");
+		for (Node c : root.getChildNodes()){
+			System.out.println(c.getContent());
+		}
 		assertEquals(expected, root.toString());
 	}
 
@@ -46,7 +50,7 @@ public class TestJSONParser {
 //		   }
 //		}
 		
-		String expected = "root: { id : 19, home : \"fanling\", wife: { name : \"hehe\", phonenumber : \"61556960\" } }";
+		String expected = "root: { id : 19, home : fanling, wife: { name : hehe, phonenumber : 61556960 } }";
 		JSONParser parser = new JSONParser(
 				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}");
 		Node root = parser.parse();
@@ -67,7 +71,7 @@ public class TestJSONParser {
 //		}
 		
 		String json ="{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"},\"uni\":\"city\"}"; 
-		String expected = "root: { id : 19, home : \"fanling\", wife: { name : \"hehe\", phonenumber : \"61556960\" }, uni : \"city\" }";
+		String expected = "root: { id : 19, home : fanling, wife: { name : hehe, phonenumber : 61556960 }, uni : city }";
 		JSONParser parser = new JSONParser(
 				json);
 		Node root = parser.parse();
