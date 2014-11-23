@@ -1,5 +1,6 @@
 /*
  * This class is used for the testing of the Console interface controlling.
+ * Perform the System Testing and Unit Testing
  */
 package console.testcase;
 
@@ -22,6 +23,96 @@ public class ConsoleTest {
 	
 	/** The out content. */
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	
+	/**
+	 * Test main with xml content argument.
+	 */
+	@Test
+	public void testMainWithXMLContentArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\s", "<name>winson</name>"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the XML to JSON successful.\n"+Console.getTransformedOutput());
+	}
+	
+	/**
+	 * Test main with json content argument.
+	 */
+	@Test
+	public void testMainWithJSONContentArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\s", "{ \"id\" : 19, \"home\" : \"fanling\" }"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the JSON to XML successful.\n"+Console.getTransformedOutput());
+	}
+	
+	/**
+	 * Test main with invalid number of argument.
+	 */
+	@Test
+	public void testMainWithInvalidNumberOfArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\s"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nPlease input valid arguments:\n1.	Do not input any argument.\n2.	\\s [{JSON}|<XML>]\n3.	\\f inputFilePath outputFilePath\n");
+	}
+	
+	/**
+	 * Test main with wrong of 2 lengths argument.
+	 */
+	@Test
+	public void testMainWithWrong2Argument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\z", "{ \"id\" : 19, \"home\" : \"fanling\" }"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nPlease input valid arguments:\n1.	Do not input any argument.\n2.	\\s [{JSON}|<XML>]\n3.	\\f inputFilePath outputFilePath\n");
+	}
+	
+	/**
+	 * Test main with wrong content argument.
+	 */
+	@Test
+	public void testMainWithWrongContentArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\s", "[ \"id\" : 19, \"home\" : \"fanling\" ]"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nPlease input valid arguments:\n1.	Do not input any argument.\n2.	\\s [{JSON}|<XML>]\n3.	\\f inputFilePath outputFilePath\n");
+	}
+	
+	/**
+	 * Test main with xml file argument.
+	 */
+	@Test
+	public void testMainWithXMLFileArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\XmlFile\\StudentWithName.txt","C:\\Users\\Winson\\workspace_cs3343\\StudentWithName.txt"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the XML to JSON successful.\n");
+	}
+	
+	/**
+	 * Test main with json file argument.
+	 */
+	@Test
+	public void testMainWithJSONFileArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\JSONFile\\SimpleJSON.txt","C:\\Users\\Winson\\workspace_cs3343\\SimpleJSON.txt"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the JSON to XML successful.\n");
+	}
+	
+	/**
+	 * Test main with wrong of 3 lengths argument.
+	 */
+	@Test
+	public void testMainWithWrong3Argument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\z", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\JSONFile\\SimpleJSON.txt","C:\\Users\\Winson\\workspace_cs3343\\SimpleJSON.txt"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nPlease input valid arguments:\n1.	Do not input any argument.\n2.	\\s [{JSON}|<XML>]\n3.	\\f inputFilePath outputFilePath\n");
+	}
+	
+	/**
+	 * Test main with wrong file content argument.
+	 */
+	@Test
+	public void testMainWithWrongFileContentArgument() {
+		System.setOut(new PrintStream(outContent));
+		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\WrongFile\\SimpleJSON.txt","C:\\Users\\Winson\\workspace_cs3343\\SimpleJSON.txt"});
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nPlease input valid arguments:\n1.	Do not input any argument.\n2.	\\s [{JSON}|<XML>]\n3.	\\f inputFilePath outputFilePath\n");
+	}
 	
 	/**
 	 * Test welcome message.
