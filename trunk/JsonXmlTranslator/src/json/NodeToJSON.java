@@ -34,14 +34,16 @@ public class NodeToJSON {
 		else 
 			result+=",\n";
 		
-		if (isArray && isFirst) //"key": [ {......
-			result += "\"" + node.getTitle() + "\": [\n{\n";
-		else if (isArray && !isFirst)
-			result += "{\n";
-		else if (!node.hasChildNode())
-			result += "\"" + node.getTitle() + "\": "; // "key": {.....
+		if (isArray)
+			if (isFirst)
+				result += "\"" + node.getTitle() + "\": [\n{\n";
+			else
+				result += "{\n";
 		else
-			result += "\"" + node.getTitle() + "\": {\n"; // "key": {.....
+			if (!node.hasChildNode())
+				result += "\"" + node.getTitle() + "\": "; // "key": {.....
+			else
+				result += "\"" + node.getTitle() + "\": {\n"; // "key": {.....
 
 		//Determine if there is any child node
 		if (node.hasChildNode()) {
@@ -59,7 +61,7 @@ public class NodeToJSON {
 						//Case 1: Duplicate Node detected
 						if (node.getChildNode(i).getTitle().equals(node.getChildNode(j).getTitle())) {
 							duplicate = true;
-							result += toJSONString(node.getChildNode(i),duplicate, (i==0), (j==i+1));
+							result += toJSONString(node.getChildNode(i),duplicate, false, (j==i+1));
 						}
 					}
 					
@@ -70,9 +72,7 @@ public class NodeToJSON {
 						//Case 2: Non Duplicate Node (Single Node)
 						result += toJSONString(node.getChildNode(i),false, (i==0),(i==0));
 				}
-				else
-					continue;
-
+				
 		}
 		else
 			result += "\"" + node.getContent() + "\"";
