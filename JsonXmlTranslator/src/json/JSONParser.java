@@ -65,7 +65,7 @@ public class JSONParser {
 		for (int idx = 0; idx < json.length(); idx++) {
 			char c = json.charAt(idx);
 
-			if (c == '{' || c == '[') {
+			if (c == '{') {
 				if (workingNode == null) {
 					Node rootNode = new Node("root");
 					nodeLevelStack.add(rootNode);
@@ -101,14 +101,14 @@ public class JSONParser {
 					keyTemp += c;
 				}
 			} else if (gettingValue) {
-				if (c == ',' || c == '}' || c == ']') {
+				if (c == ',' || c == '}') {
 					gettingValue = false;
 					if (workingNode == null){
 						throw new JSONParseException("Missing key for value around " + idx);
 					}
 					workingNode.setContent(valueTemp.trim());
 
-					if (c == '}' || c == ']') {
+					if (c == '}') {
 
 						// keep the last level
 						if (nodeLevelStack.size() > 1) {

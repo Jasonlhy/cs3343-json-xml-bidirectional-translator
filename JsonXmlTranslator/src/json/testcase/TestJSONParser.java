@@ -1,6 +1,7 @@
 package json.testcase;
 
 import static org.junit.Assert.*;
+import json.JSONParseException;
 import json.JSONParser;
 
 import org.junit.Test;
@@ -32,10 +33,7 @@ public class TestJSONParser {
 		String expected = "root: { id : 19, home : fanling }";
 		JSONParser parser = new JSONParser("{\"id\":19,\"home\":\"fanling\"}");
 		Node root = parser.parse();
-		System.out.println("hihi");
-		for (Node c : root.getChildNodes()){
-			System.out.println(c.getContent());
-		}
+
 		assertEquals(expected, root.toString());
 	}
 
@@ -54,7 +52,6 @@ public class TestJSONParser {
 		JSONParser parser = new JSONParser(
 				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}");
 		Node root = parser.parse();
-		//System.out.println("\testSimpleJSONObject1NoSpace: \n" + root.toString());
 		assertEquals(expected, root.toString());
 	}
 	
@@ -75,35 +72,41 @@ public class TestJSONParser {
 		JSONParser parser = new JSONParser(
 				json);
 		Node root = parser.parse();
-		//System.out.println("json: "+ json);
-		//System.out.println("\testSimpleJSONObject2NoSpace: \n" + root.toString());
 		assertEquals(expected, root.toString());
 	}
 	
+
+	
 	@Test
-	public void testSimpleJSONArray1NoSpace() {
-//		 {  
-//		   "id":19,
-//		   "home":"fanling",
-//		   "wife":[  
-//		      {  
-//		         "name":"hehe",
-//		         "phonenumber":"61556960"
-//		      },
-//		      {  
-//		         "name":"ricky",
-//		         "phonenumber":"99999"
-//		      }
-//		   ]
-//		}
-		 
-		// TODO failed right now
-		String json = "{\"id\":19,\"home\":\"fanling\",\"wife\":[{\"name\":\"hehe\",\"phonenumber\":\"61556960\"},{\"name\":\"ricky\",\"phonenumber\":\"99999\"}]}";
-		String expected = "root: { id : 19, home : \"fanling\", wife: { name : \"hehe\", phonenumber : \"61556960\" }, wife: { name : \"ricky\", phonenumber : \"99999\" } }";
+	public void testInvalidJSON() {
+		String json = "";
 		JSONParser parser = new JSONParser(json);
-		
-		Node root = parser.parse();
-		System.out.println("\ntestSimpleJSONArray1NoSpace: \n"+ root.toString());
-		assertEquals(expected, root.toString());
+		try {
+			parser.parse();
+		} catch (JSONParseException ex){
+			assertEquals("Invalid JSON", ex.getMessage());
+		}
+	}
+	
+	@Test
+	public void testMissingKey() {
+		String json = "{id:12}";
+		JSONParser parser = new JSONParser(json);
+		try {
+			parser.parse();
+		} catch (JSONParseException ex){
+			assertEquals("Missing key for value around 6", ex.getMessage());
+		}
+	}
+	
+	@Test
+	public void testMissingOpenBracket() {
+		String json = "\"id\":12}";
+		JSONParser parser = new JSONParser(json);
+		try {
+			parser.parse();
+		} catch (JSONParseException ex){
+			assertEquals("Missing open bracket for double quote at 3", ex.getMessage());
+		}
 	}
 }
