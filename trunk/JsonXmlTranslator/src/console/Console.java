@@ -11,6 +11,7 @@ import json.JSONParser;
 import component.Node;
 import utility.io.FatTommyFileReader;
 import utility.io.FatTommyFileWriter;
+import utility.log.CustomLog;
 import xml.NodeToXml;
 import xml.XMLWriter;
 import xml.XmlToNode;
@@ -176,16 +177,27 @@ public class Console {
 	 * @throws IOException             Signals that an I/O exception has occurred.
 	 */
 	public static List<String> transformOptionJSONtoXML(String jsonContent) throws IOException {
-		JSONParser parser = new JSONParser(jsonContent);
-		Node root = parser.parse();
-		NodeToXml nodeToXML = new NodeToXml();
-		
-		transformedOutput=nodeToXML.outputXMLFile(root);
-		
-		System.out.print("Transform the JSON to XML successful.\n");
-		
+		Node root = null;
 		List<String> result=new ArrayList<String>();
-		result.add(nodeToXML.outputXMLFile(root));
+		
+		try {
+			JSONParser parser = new JSONParser(jsonContent);
+			root = parser.parse();
+			
+			NodeToXml nodeToXML = new NodeToXml();
+			transformedOutput = nodeToXML.outputXMLFile(root);
+			
+			System.out.print("Transform the JSON to XML successful.\n");
+			
+		
+			result.add(nodeToXML.outputXMLFile(root));
+		} catch (JSONParseException ex){
+			System.out.println("Transform the JSON to XML failed.\n");
+			System.out.println(ex.getMessage());
+			CustomLog.getInstance().error(ex);
+		}
+		
+
 		
 		return result;
 	}
@@ -235,6 +247,8 @@ public class Console {
 		Console console = new Console();
 		console.welcomeMessage();
 		
+		
+		CustomLog.getInstance().info(("args length: " + args.length));
 		if(args.length==0){
 			console.transformOptionMessage();
 			console.transformOption();
@@ -247,9 +261,12 @@ public class Console {
 			}else if(inputContent.replaceAll("\\s+","").charAt(0)=='<'){
 				convertMode="XMLtoJSON";
 			}
+			
+			
 			if("\\S".equals(mode.toUpperCase())){
 				if(convertMode=="JSONtoXML"){
 					try {
+						CustomLog.getInstance().info("input content for json parser: " + inputContent);
 						console.transformOptionJSONtoXML(inputContent);
 						System.out.print(console.getTransformedOutput());
 					} catch (IOException e) {
