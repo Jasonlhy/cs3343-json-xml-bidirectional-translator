@@ -46,11 +46,13 @@ public class JSONParser {
 	 * Parse the JSON string into node objects.
 	 * 
 	 * @return Node The root of the node
+	 * @throws JSONParseException
+	 *             when the parsing encountered error at runtime
 	 */
 	public Node parse() {
 		Stack<Node> nodeLevelStack = new Stack<Node>();
 
-		char chars [] = json.toCharArray();
+		char chars[] = json.toCharArray();
 		String keyTemp = "";
 		String valueTemp = "";
 		boolean gettingKey = false;
@@ -60,7 +62,9 @@ public class JSONParser {
 		// e.g. "id" : 19
 		// when this scan though "id", the workingNode is NODE with title: "id"
 		Node workingNode = null;
-		for (char c : chars){
+		for (int idx = 0; idx < json.length(); idx++) {
+			char c = json.charAt(idx);
+
 			if (c == '{' || c == '[') {
 				if (workingNode == null) {
 					Node rootNode = new Node("root");
@@ -84,6 +88,12 @@ public class JSONParser {
 			} else if (gettingKey) {
 				if (c == '"') { // end of getting value when you meet 2nd
 								// quote
+					if (nodeLevelStack.size() == 0) {
+						throw new JSONParseException(
+								"Missing open bracket for double quote at "
+										+ idx);
+					}
+
 					workingNode = new Node(keyTemp);
 					nodeLevelStack.peek().addNode(workingNode);
 					gettingKey = false;
@@ -93,9 +103,13 @@ public class JSONParser {
 			} else if (gettingValue) {
 				if (c == ',' || c == '}' || c == ']') {
 					gettingValue = false;
+					if (workingNode == null){
+						throw new JSONParseException("Missing key for value around " + idx);
+					}
 					workingNode.setContent(valueTemp.trim());
 
 					if (c == '}' || c == ']') {
+
 						// keep the last level
 						if (nodeLevelStack.size() > 1) {
 							nodeLevelStack.pop();
@@ -109,7 +123,11 @@ public class JSONParser {
 			}
 		}
 
-		Node root = (nodeLevelStack.size() == 0) ? null : nodeLevelStack.get(0);
+		if (nodeLevelStack.size() == 0) {
+			throw new JSONParseException("Invalid JSON");
+		}
+
+		Node root = nodeLevelStack.get(0);
 		return root;
 	}
 }
