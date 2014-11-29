@@ -1,5 +1,6 @@
 package json;
 
+import utility.CustomLog;
 import component.Node;
 
 /**
@@ -26,8 +27,14 @@ public class JSONBeautifier {
 		String outputString = "";
 		if (converToNode) {
 			JSONParser parser = new JSONParser(jsonString);
-			Node node = parser.parse();
-			outputString = beautifierUseNode(node, jsonString);
+			try {
+				Node node = parser.parse();
+				outputString = beautifierUseNode(node, jsonString);
+			} catch (JSONParseException ex){
+				CustomLog.getInstance().error(ex);
+				System.out.println("Failed to parse using node, try to beautifer using string only");
+				outputString = beautifierUseString(jsonString);
+			}
 		} else {
 			outputString = beautifierUseString(jsonString);
 		}
