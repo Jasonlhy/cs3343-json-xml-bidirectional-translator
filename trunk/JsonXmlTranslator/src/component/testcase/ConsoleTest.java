@@ -2,7 +2,7 @@
  * This class is used for the testing of the Console interface controlling.
  * Perform the System Testing and Unit Testing
  */
-package console.testcase;
+package component.testcase;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-import console.Console;
+import component.Console;
 
 // TODO: Auto-generated Javadoc
 /**

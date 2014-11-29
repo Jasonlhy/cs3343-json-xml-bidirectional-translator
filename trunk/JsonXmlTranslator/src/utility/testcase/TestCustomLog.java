@@ -1,10 +1,9 @@
-package utility.log.testcase;
+package utility.testcase;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import utility.log.CustomLog;
+import utility.CustomLog;
 
 public class TestCustomLog {
 

@@ -3,14 +3,14 @@ package xml.testcase;
 import static org.junit.Assert.*;
 import json.JSONParser;
 import junit.framework.TestCase;
-import xml.NodeToXml;
+import xml.NodeToXMLB;
 import component.Node;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class testNodeToXml extends TestCase{
-	NodeToXml n = new NodeToXml();
+	NodeToXMLB n = new NodeToXMLB();
 	
 	@Test
 	public void test() {

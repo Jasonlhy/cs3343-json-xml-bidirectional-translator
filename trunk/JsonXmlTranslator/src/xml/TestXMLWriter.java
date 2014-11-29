@@ -16,7 +16,7 @@ public class TestXMLWriter {
 	public void test_1() {
 		JSONParser parserA = new JSONParser("{\"id\":19}");
 		Node rootA = parserA.parse();
-		XMLWriter writerA = new XMLWriter();
+		NodToXMLA writerA = new NodToXMLA();
 		List<String> resultant = writerA.writeXML(rootA);
 		String resultantStr = "";
 		for (String s : resultant) {
@@ -30,7 +30,7 @@ public class TestXMLWriter {
 		JSONParser parser = new JSONParser(
 				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}");
 		Node root = parser.parse();
-		XMLWriter writerB = new XMLWriter();
+		NodToXMLA writerB = new NodToXMLA();
 		List<String> resultant = writerB.writeXML(root);
 		String resultantStr = "";
 		for (String s : resultant) {

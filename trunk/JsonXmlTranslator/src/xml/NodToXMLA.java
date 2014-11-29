@@ -4,7 +4,7 @@ import java.util.*;
 
 import component.Node;
 
-public class XMLWriter {
+public class NodToXMLA {
 	
 	private Stack<String> elementStack;
 	private List<String> resultant;

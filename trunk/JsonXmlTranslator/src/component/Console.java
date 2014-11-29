@@ -2,19 +2,18 @@
  * This class is used for the Console interface controlling,
  * control the whole system flows.
  */
-package console;
+package component;
 
 import java.io.IOException;
 import java.util.*;
 
 import json.JSONParser;
-import component.Node;
-import utility.io.FatTommyFileReader;
-import utility.io.FatTommyFileWriter;
-import utility.log.CustomLog;
-import xml.NodeToXml;
-import xml.XMLWriter;
-import xml.XmlToNode;
+import utility.FatTommyFileReader;
+import utility.FatTommyFileWriter;
+import utility.CustomLog;
+import xml.NodeToXMLB;
+import xml.NodToXMLA;
+import xml.XMLParser;
 import json.*;
 
 // TODO: Auto-generated Javadoc
@@ -184,7 +183,7 @@ public class Console {
 			JSONParser parser = new JSONParser(jsonContent);
 			root = parser.parse();
 			
-			NodeToXml nodeToXML = new NodeToXml();
+			NodeToXMLB nodeToXML = new NodeToXMLB();
 			transformedOutput = nodeToXML.outputXMLFile(root);
 			
 			System.out.print("Transform the JSON to XML successful.\n");
@@ -210,7 +209,7 @@ public class Console {
 	 * @throws IOException             Signals that an I/O exception has occurred.
 	 */
 	public static List<String> transformOptionXMLtoJSON(String xmlContent) throws IOException {
-		XmlToNode xmlToNode = new XmlToNode();
+		XMLParser xmlToNode = new XMLParser();
 		Node root = xmlToNode.Translate(xmlContent);
 		NodeToJSON toJson = new NodeToJSON();
 		

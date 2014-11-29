@@ -1,4 +1,4 @@
-package utility.io;
+package utility;
 
 import java.util.List;
 import java.io.BufferedWriter;

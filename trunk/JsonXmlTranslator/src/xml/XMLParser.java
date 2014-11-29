@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import component.Node;
 
-public class XmlToNode {
+public class XMLParser {
 	Stack<String> follower = new Stack<String>();
 	
 	

@@ -3,7 +3,7 @@ package xml;
 import java.util.List;
 import component.Node;
 
-public class NodeToXml {
+public class NodeToXMLB {
 	
 	public String TurnNodeIntoXml(Node rootNode) {
 		return this.TurnNodeIntoXml(rootNode,  new String());
