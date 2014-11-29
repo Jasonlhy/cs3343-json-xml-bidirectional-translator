@@ -4,7 +4,10 @@ import utility.CustomLog;
 import component.Node;
 
 /**
- * Beautifier a JSON output with indentation
+ * Beautifier a JSON output with indentation. It can either beautifier a JSON using
+ * JSON parser or beautifier a JSON as a string . If JSONParser occurs some
+ * JSONParseException, the beautifier will try to beautifier the JSON as a
+ * string.
  * 
  * 
  * 
@@ -30,9 +33,10 @@ public class JSONBeautifier {
 			try {
 				Node node = parser.parse();
 				outputString = beautifierUseNode(node, jsonString);
-			} catch (JSONParseException ex){
+			} catch (JSONParseException ex) {
 				CustomLog.getInstance().error(ex);
-				System.out.println("Failed to parse using node, try to beautifer using string only");
+				System.out
+						.println("Failed to parse using node, try to beautifer using string only");
 				outputString = beautifierUseString(jsonString);
 			}
 		} else {
@@ -57,28 +61,33 @@ public class JSONBeautifier {
 
 	/**
 	 * Beautifier a JSON output with indentation with string only, this read the
-	 * character one by one
+	 * character one by one. <br>
+	 * 
+	 * It faces { then append { into current line, jump to next line with next level intent.<br>
+	 * It faces } then write } into next line with previous intent<br>
+	 * It faces , then append , into current line, jump to the next line with current intent<br>
+ 	 * else, just append to the current line.
 	 * 
 	 * @param jsonString
 	 *            JsonString to be beautifier
 	 * @return a JSONString with indentation
 	 */
 	public String beautifierUseString(String jsonString) {
-		
+
 		int intentLevel = 0;
 		String intentedString = "";
 		String eachLine = "";
 		for (int idx = 0; idx < jsonString.length(); idx++) {
 			char c = jsonString.charAt(idx);
-			
+
 			if (c == '{') {
 				intentedString += eachLine.trim();
-				intentLevel    += 1;
-				intentedString += c + "\n" + createIntent(intentLevel); 
+				intentLevel += 1;
+				intentedString += c + "\n" + createIntent(intentLevel);
 				eachLine = "";
 			} else if (c == '}') {
 				intentedString += eachLine.trim();
-				intentLevel    -= 1;
+				intentLevel -= 1;
 				intentedString += "\n" + createIntent(intentLevel) + c;
 				eachLine = "";
 			} else if (c == ',') {
@@ -107,8 +116,6 @@ public class JSONBeautifier {
 
 		return (asiiNumber >= 32);
 	}
-
-	
 
 	/**
 	 * Create intent

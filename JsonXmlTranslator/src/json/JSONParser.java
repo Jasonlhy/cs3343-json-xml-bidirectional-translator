@@ -7,8 +7,10 @@ import java.util.Stack;
 import component.Node;
 
 /**
- * Parse a JSON string into nodes. The fist node comes with a title: "root", holding a list of nodes that are title-content pair. 
+ * Parse a JSON string into nodes. The fist node comes with a title: "root", holding a list of nodes that are title-content pair. <br>
+ * <br>
  * 
+ * <pre>
  * Example 1, JSON Object is simple key-value pairs
  * {id:20} converts into two nodes => 
  * Node(title: "root")
@@ -16,8 +18,10 @@ import component.Node;
  *   |
  *   nodeList:
  *   [0] Node(title:"id", content:"20")
+ * </pre>
  *   
  *   
+ * <pre>
  * Example 2, JSON Object contains another JSON Object
  * {wife:{name:"jason"},age:20} converts into three nodes =>
  * Node(title: "root")
@@ -31,7 +35,7 @@ import component.Node;
  *       [0] Node(title:"name", content:"jason") 
  *      
  *   [1] Node(title:"age",age:"20")
- *   
+ * </pre>
  * @author jason
  * @since 25-9-2014
  */
