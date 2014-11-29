@@ -9,17 +9,32 @@ public class XMLParser {
 	Stack<String> follower = new Stack<String>();
 	
 	
-	public Node Translate(String xmlString)
+	public Node Translate(String xmlString) throws Exception
 	{
+		Node result = null;
+		try{
+		if(!mostLeftisNode(xmlString.toString()))
+		{
+			throw new Exception("Format Exception");
+		}
 		StringBuilder xml = new StringBuilder();
 		xml.append(xmlString);
-		if(!mostLeftisNode(xml.toString()))
-			return null;
 		Node newNode = new Node();
-		return TranslateToNode(xml, newNode);
+		result = TranslateToNode(xml, newNode);
+		return result;
+		}
+		catch (Exception e)
+		{
+			System.out.println("Wrong XML Format");
+			//throw e;
+			return null;
+		}
+		
+		
+		//return result;
 	}
 	
-	public Node TranslateToNode(StringBuilder xmlString, Node currentNode)
+	public Node TranslateToNode(StringBuilder xmlString, Node currentNode) throws Exception
 	{
 		if(!mostLeftisNode(xmlString.toString()))
 		{
@@ -29,12 +44,6 @@ public class XMLParser {
 		//The most left string is node. Therefore, we divide the string to node string and other xml string.
 		//divide string into two
 		String nodeString;
-		if(!mostLeftisNode(xmlString.toString()))
-		{
-			//System.out.println("May be String value");
-			return null;
-			//exception
-		}
 		int nodeEnd = NodeStartAndEnd(xmlString.toString())[1];
 		//System.err.println(nodeEnd);
 		nodeString = xmlString.substring(0,nodeEnd);
@@ -69,25 +78,40 @@ public class XMLParser {
 				nodeString = xmlString.substring(0, nodeEnd);
 				if(TAG.CLOSE.isValid(nodeString))
 				{
+					
 					if(follower.peek().equals(currentNode.getTitle()))
 					{
+						if(!getNodename(nodeString).replace("/", "").equals(currentNode.getTitle()))
+						{
+							throw new Exception("Wrong Format");
+						}
 						//System.out.println("Finish One Node");
 						follower.pop();
 						xmlString.delete(0, nodeEnd);
 						break;
 					}
 				}
-				//xmlString.delete(0, nodeEnd);
-				//System.err.println("one round: "+xmlString);
 			}
+			else if(TAG.SHORT.isValid(nodeString))
+			{
+				currentNode.addNode(getShortNameAndAttribute(nodeString));
+				xmlString.delete(0, nodeEnd);
+				break;
+			}
+			else
+			{
+				throw new Exception();
+			}
+			
+			//}
 		}
 		return currentNode;
 	}
 	//Get the first match "<...>" pattern and cut the string as s1 = <...> and s2 = ...<...>... remain string
-	public String divideToTwo(String xmlString)
+	/*public String divideToTwo(String xmlString)
 	{
 		return "";
-	}
+	}*/
 	public boolean mostLeftisNode(String xmlString)
 	{
 		String regex = "<[^<>]+>";
@@ -127,5 +151,45 @@ public class XMLParser {
 		return match;
 		
 	}
+	
+	public Node getShortNameAndAttribute(String nodeString)
+	{
+		Node shortNode = new Node();
+		int index = nodeString.indexOf(' ');
+		shortNode.setTitle(nodeString.substring(1, index));
+		nodeString = nodeString.substring(index+1, nodeString.length()-1);
+		while(true)
+		{
+			index = nodeString.indexOf(' ');
+			String attriString;
+			if(index != -1)
+				attriString = nodeString.substring(0, index);
+			else
+			{
+				index = nodeString.indexOf('/');
+				attriString = nodeString.substring(0, index);
+			}
+			nodeString = nodeString.substring(index+1, nodeString.length());
+			if(nodeString.equals(""))
+				break;
+			Node attributeNode = getAttribute(attriString);
+			shortNode.addNode(attributeNode);
+		}
+		return shortNode;
+	}
+	
+	public Node getAttribute(String attriString)
+	{
+		Node attribute = new Node();
+		int index = attriString.indexOf('=');
+		//System.err.println(index);
+		attribute.setTitle(attriString.substring(0, index));
+		attriString = attriString.substring(index+2, attriString.length());
+		index = attriString.indexOf('"');
+		attribute.setContent(attriString.substring(0, index));
+		return attribute;
+	}
+	
+	
 	
 }
