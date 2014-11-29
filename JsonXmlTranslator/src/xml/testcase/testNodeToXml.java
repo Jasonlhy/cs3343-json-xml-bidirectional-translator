@@ -15,14 +15,14 @@ public class testNodeToXml extends TestCase{
 	@Test
 	public void test() {
 		Node root = new Node("root");
-		assertEquals("<root></root>", n.TurnNodeIntoXml(root));
+		assertEquals("<root></root>", n.outputXMLFile(root));
 	}
 	
 	@Test
 	public void test2() {
 		Node root = new Node("hi");
 		root.setContent("auntie");
-		assertEquals("<hi>auntie</hi>",n.TurnNodeIntoXml(root));
+		assertEquals("<hi>auntie</hi>",n.outputXMLFile(root));
 	}
 	
 	@Test
@@ -31,7 +31,7 @@ public class testNodeToXml extends TestCase{
 		root.setContent("auntie");
 		Node root2 = new Node("test");
 		root2.addNode(root);
-		assertEquals("<test><hi>auntie</hi></test>",n.TurnNodeIntoXml(root2));
+		assertEquals("<test><hi>auntie</hi></test>",n.outputXMLFile(root2));
 	}
 
 }
