@@ -22,7 +22,15 @@ public class XMLBeautifier {
 
 			if (c1=='<') {
 				output+="\n";
-				output+=createIntent(intentLevel);
+				if (c2=='/'){
+					output+=createIntent(intentLevel);
+					intentLevel--;
+				}
+				else{
+					intentLevel++;
+					output+=createIntent(intentLevel);
+				}
+				
 				output+=c1;
 				while (true) {
 					char inner = input.charAt(i+1);
@@ -31,10 +39,7 @@ public class XMLBeautifier {
 					if (inner=='>')
 						break;
 				}
-				if (c2=='/')
-					intentLevel--;
-				else
-					intentLevel++;	
+					
 			}
 			else
 				output+=c1;
