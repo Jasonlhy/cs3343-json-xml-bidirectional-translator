@@ -6,16 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class FatTommyFileWriter implements TommyFileWriter{
+public class StringFileWriter implements StringFileWriterInterface{
 
 	
 	String outPath ;
 	
-	public FatTommyFileWriter(String filePath){
+	public StringFileWriter(String filePath){
 		outPath = filePath;
 		
 	}
-	public FatTommyFileWriter(){
+	public StringFileWriter(){
 		outPath = "./result.txt";
 	}
 	

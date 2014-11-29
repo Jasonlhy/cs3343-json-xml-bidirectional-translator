@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.*;
 
 import json.JSONParser;
-import utility.FatTommyFileReader;
-import utility.FatTommyFileWriter;
+import utility.StringFileReader;
+import utility.StringFileWriter;
 import utility.CustomLog;
 import xml.NodeToXMLB;
 import xml.NodToXMLA;
@@ -21,6 +21,10 @@ import json.*;
  * The Class Console. 
  */
 public class Console {
+	private static final String UN_SUPPORT_FILE_TYPE = "false";
+	private static final String XML_TO_JSON = "XMLtoJSON";
+	private static final String JSON_TO_XML = "JSONtoXML";
+
 	/** The transform option. */
 	String transformOption="X";
 	
@@ -124,8 +128,8 @@ public class Console {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public void setFileOutput(String path,List content) throws IOException{
-		FatTommyFileWriter w;
-		w = new FatTommyFileWriter(path);
+		StringFileWriter w;
+		w = new StringFileWriter(path);
 		w.WriteToFile(content);
 	}
 	
@@ -137,8 +141,8 @@ public class Console {
 	 * @return the file content
 	 */
 	public String getFileContent(String path){
-		FatTommyFileReader r;
-		r = new FatTommyFileReader(path);
+		StringFileReader r;
+		r = new StringFileReader(path);
 		String content="";
 		try {
 			content = r.readWholeFile();		
@@ -158,13 +162,14 @@ public class Console {
 	 */
 	public String checkTransformOptionByfile(String path){
 		String content = getFileContent(path);
+		CustomLog.getInstance().info("determine transform: " + path);
 		char contentType = content.charAt(0);
 		if(contentType=='{'){
-			return "JSONtoXML";
+			return JSON_TO_XML;
 		}else if(contentType=='<'){
-			return "XMLtoJSON";
+			return XML_TO_JSON;
 		}else{
-			return "false";
+			return UN_SUPPORT_FILE_TYPE;
 		}
 	}
 
@@ -239,8 +244,8 @@ public class Console {
 	 * @param args
 	 *            the arguments
 	 *            1.	Do not input any argument.
-	 *            2.	\\s [{JSON}|<XML>]
-	 *            3.	\\f inputFilePath outputFilePat
+	 *            2.	\s [{JSON}|<XML>]
+	 *            3.	\f inputFilePath outputFilePat
 	 */
 	public static void main(String [] args){
 		Console console = new Console();
@@ -256,14 +261,14 @@ public class Console {
 			String inputContent=args[1];
 			String convertMode="";
 			if(inputContent.replaceAll("\\s+","").charAt(0)=='{'){
-				convertMode="JSONtoXML";
+				convertMode=JSON_TO_XML;
 			}else if(inputContent.replaceAll("\\s+","").charAt(0)=='<'){
-				convertMode="XMLtoJSON";
+				convertMode=XML_TO_JSON;
 			}
 			
 			
 			if("\\S".equals(mode.toUpperCase())){
-				if(convertMode=="JSONtoXML"){
+				if(convertMode==JSON_TO_XML){
 					try {
 						CustomLog.getInstance().info("input content for json parser: " + inputContent);
 						console.transformOptionJSONtoXML(inputContent);
@@ -272,7 +277,7 @@ public class Console {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}else if(convertMode=="XMLtoJSON"){
+				}else if(convertMode==XML_TO_JSON){
 					try {
 						console.transformOptionXMLtoJSON(inputContent);
 						System.out.print(console.getTransformedOutput());
@@ -291,15 +296,17 @@ public class Console {
 			String inputFileLocation=args[1];
 			String outputFileLocation=args[2];
 			String convertMode=console.checkTransformOptionByfile(inputFileLocation);
+			
+			CustomLog.getInstance().info("inputFileLocation: " + inputFileLocation);
 			if("\\F".equals(mode.toUpperCase())){
-				if(convertMode=="JSONtoXML"){
+				if(convertMode==JSON_TO_XML){
 					try {
 						console.setFileOutput(outputFileLocation, transformOptionJSONtoXML(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}else if(convertMode=="XMLtoJSON"){
+				}else if(convertMode==XML_TO_JSON){
 					try {
 						console.setFileOutput(outputFileLocation, transformOptionXMLtoJSON(console.getFileContent(inputFileLocation)));
 					} catch (IOException e) {

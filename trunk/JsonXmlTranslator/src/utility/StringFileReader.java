@@ -4,16 +4,16 @@ import java.io.*;
 import java.nio.file.Files;
 
 
-public class FatTommyFileReader implements TommyFileReader{
+public class StringFileReader implements StringFileReaderInterface{
 	
 	private String filename;
 	
 	
-	private FatTommyFileReader(){
+	private StringFileReader(){
 		
 	}
 	
-	public FatTommyFileReader(String filename){
+	public StringFileReader(String filename){
 		this();
 		this.filename = filename;
 	}
