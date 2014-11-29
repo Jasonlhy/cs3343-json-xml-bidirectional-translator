@@ -2,12 +2,12 @@ package xml.testcase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import xml.XmlToNode;
+import xml.XMLParser;
 import component.Node;
 
 public class TestingTranslator {
 	String testString = "<A></A>";
-	XmlToNode xtranslator = new XmlToNode();
+	XMLParser xtranslator = new XMLParser();
 	Node testNode = xtranslator.Translate(testString);
 
 

@@ -1,7 +1,7 @@
 package xml.testcase;
 
 import static org.junit.Assert.*;
-import xml.XmlToNode;
+import xml.XMLParser;
 import component.Node;
 
 import org.junit.Test;
@@ -11,7 +11,7 @@ public class TestXmlToNode {
 	@Test
 	public void test() {
 		String testString = "<A><B>abc</B></A>";
-		XmlToNode testTranslator = new XmlToNode();
+		XMLParser testTranslator = new XMLParser();
 		Node testNode = testTranslator.Translate(testString);
 		Node answerANode = new Node("A");
 		Node answerBNode = new Node("B");
@@ -24,28 +24,28 @@ public class TestXmlToNode {
 	public void testMostLeftisNode()
 	{
 		String testString = "<A>abc</A>";
-		XmlToNode test = new XmlToNode();
+		XMLParser test = new XMLParser();
 		assertTrue(test.mostLeftisNode(testString));
 	}
 	@Test
 	public void testFailMostLeftisNode()
 	{
 		String testString = "abc<A>";
-		XmlToNode test = new XmlToNode();
+		XMLParser test = new XMLParser();
 		assertFalse(test.mostLeftisNode(testString));
 	}
 	@Test
 	public void TestTrueMostLeftisNode()
 	{
 		String testString = "<A>abc</A>";
-		XmlToNode test = new XmlToNode();
+		XMLParser test = new XMLParser();
 		assertTrue(test.mostLeftisNode(testString));
 	}
 	@Test
 	public void TestGetNodeName()
 	{
 		String testString = "<A>";
-		XmlToNode test = new XmlToNode();
+		XMLParser test = new XMLParser();
 		assertEquals("A", test.getNodename(testString));
 	}
 	
@@ -54,7 +54,7 @@ public class TestXmlToNode {
 	{
 		StringBuilder testString = new StringBuilder();
 		testString.append("abc</A>");
-		XmlToNode test= new XmlToNode();
+		XMLParser test= new XMLParser();
 		assertEquals("abc", test.getValue(testString));
 	}
 	
@@ -62,7 +62,7 @@ public class TestXmlToNode {
 	public void TestNodeStartAndEnd()
 	{
 		String testString = "<testing>testing1</testing>";
-		XmlToNode test = new XmlToNode();
+		XMLParser test = new XMLParser();
 		int[] result = test.NodeStartAndEnd(testString);
 		assertEquals(0, result[0]);
 		assertEquals(9, result[1]);

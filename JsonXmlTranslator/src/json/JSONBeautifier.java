@@ -2,8 +2,6 @@ package json;
 
 import component.Node;
 
-import utility.log.CustomLog;
-
 /**
  * Beautifier a JSON output with indentation
  * 

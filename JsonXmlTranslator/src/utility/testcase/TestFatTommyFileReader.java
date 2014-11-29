@@ -1,10 +1,11 @@
-package utility.io.testcase;
+package utility.testcase;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import utility.io.FatTommyFileReader;
+
+import utility.FatTommyFileReader;
 
 import org.junit.Test;
 
