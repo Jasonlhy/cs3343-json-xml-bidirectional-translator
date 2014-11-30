@@ -17,7 +17,7 @@ public class NodeToJSON {
 		//Global Start Tag
 		result+="{\n";
 		
-		result+=toJSONString(node, false, true, true);
+		result+=toJSONString(node, false, true, true, 1);
 		
 		//Global End Tag
 		result+="\n}";
@@ -25,25 +25,25 @@ public class NodeToJSON {
 		return result;
 	}
 	
-	private static String toJSONString(Node node, boolean isArray, boolean upperIsFirst, boolean isFirst) {
+	private static String toJSONString(Node node, boolean isArray, boolean upperIsFirst, boolean isFirst, int level) {
 		
 		String result = "";
 		
 		if (upperIsFirst)
 			result+="";
 		else 
-			result+=",\n";
+			result+=",\n" + createIndent(level);
 		
 		if (isArray)
 			if (isFirst)
-				result += "\"" + node.getTitle() + "\": [\n{\n";
+				result += "\"" + node.getTitle() + "\": [\n" + createIndent(level) + "{\n" + createIndent(level + 1);
 			else
-				result += "{\n";
+				result += "{\n" + createIndent(level + 1);
 		else
 			if (!node.hasChildNode())
-				result += "\"" + node.getTitle() + "\": "; // "key": {.....
+				result += "\"" + node.getTitle() + "\": "; // "key": .....
 			else
-				result += "\"" + node.getTitle() + "\": {\n"; // "key": {.....
+				result += "\"" + node.getTitle() + "\": {\n" + createIndent(level); // "key": {.....
 
 		//Determine if there is any child node
 		if (node.hasChildNode()) {
@@ -61,16 +61,16 @@ public class NodeToJSON {
 						//Case 1: Duplicate Node detected
 						if (node.getChildNode(i).getTitle().equals(node.getChildNode(j).getTitle())) {
 							duplicate = true;
-							result += toJSONString(node.getChildNode(i),duplicate, false, (j==i+1));
+							result += toJSONString(node.getChildNode(i),duplicate, false, (j==i+1), level + 1);
 						}
 					}
 					
 					//Close array tag for duplicate node (Array)
 					if (duplicate)
-						result+="\n]";
+						result += "\n" + createIndent(level + 1) + "]" ;
 					else
 						//Case 2: Non Duplicate Node (Single Node)
-						result += toJSONString(node.getChildNode(i),false, (i==0),(i==0));
+						result += toJSONString(node.getChildNode(i),false, (i==0),(i==0), level + 1);
 				}
 				
 		}
@@ -78,10 +78,25 @@ public class NodeToJSON {
 			result += "\"" + node.getContent() + "\"";
 
 		if (node.hasChildNode())
-			result+="\n}";
+			result +="\n" + createIndent(level)  + "}";
 		else
 			result+="";
 		
 		return result;
+	}
+	
+	/**
+	 * Create indentation space
+	 * 
+	 * @param level, start from 1
+	 * @return space, number of space is same as number of level
+	 */
+	private static String createIndent(int level){
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < level; i++){
+			builder.append(" ");
+		}
+		
+		return builder.toString();
 	}
 }
