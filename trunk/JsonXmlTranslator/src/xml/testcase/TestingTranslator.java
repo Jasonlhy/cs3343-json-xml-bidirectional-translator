@@ -8,9 +8,6 @@ import component.Node;
 public class TestingTranslator {
 	String testString = "<A></A>";
 	XMLParser xtranslator = new XMLParser();
-	Node testNode = xtranslator.Translate(testString);
-
-
 
 	public static void main(String [] args){
 		String xmlString = "<abcd>jjj";

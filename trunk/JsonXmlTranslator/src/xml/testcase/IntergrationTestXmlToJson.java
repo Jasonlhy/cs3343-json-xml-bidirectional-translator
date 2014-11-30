@@ -16,7 +16,11 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student><name>Tommy</name></student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": {\n\"name\": \"Tommy\"\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": {\n\"name\": \"Tommy\"\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -24,7 +28,11 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student></student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": \"\"\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": \"\"\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -32,7 +40,11 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student>Tommy</student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": \"Tommy\"\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": \"Tommy\"\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -40,7 +52,11 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student><a><name>Tommy</name></a></student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 				
 	}
 	
@@ -49,7 +65,11 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student><a><name>Tommy</name></a><b><name>Tummy</name></u></student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\"\n},\n\"b\": {\n\"name\": \"Tummy\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\"\n},\n\"b\": {\n\"name\": \"Tummy\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 				
 	}
 	
@@ -58,6 +78,10 @@ public class IntergrationTestXmlToJson extends TestCase{
 	{
 		String testString = "<student><a><name>Tommy</name><weight>200</weight></a></student>";
 		XMLParser test = new XMLParser();
-		assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\",\n\"weight\": \"200\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		try {
+			assertEquals("{\n\"student\": {\n\"a\": {\n\"name\": \"Tommy\",\n\"weight\": \"200\"\n}\n}\n}",NodeToJSON.toJSONString(test.Translate(testString)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
