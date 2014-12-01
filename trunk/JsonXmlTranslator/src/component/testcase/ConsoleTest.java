@@ -42,7 +42,7 @@ public class ConsoleTest {
 	public void testMainWithJSONContentArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\s", "{ \"id\" : 19, \"home\" : \"fanling\" }"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the JSON to XML successful.\n");
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class ConsoleTest {
 	public void testMainWithJSONFileArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\JSONFile\\SimpleJSON.txt","C:\\Users\\Winson\\workspace_cs3343\\SimpleJSON.txt"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");	}
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the JSON to XML successful.\n");	}
 	
 	/**
 	 * Test main with wrong of 3 lengths argument.
