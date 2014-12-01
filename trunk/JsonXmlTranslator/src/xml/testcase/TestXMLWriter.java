@@ -8,7 +8,7 @@ import json.JSONParser;
 
 import org.junit.Test;
 
-import xml.NodToXMLA;
+import xml.NodeToXMLA;
 import component.Node;
 
 public class TestXMLWriter {
@@ -17,7 +17,7 @@ public class TestXMLWriter {
 	public void test_1() {
 		JSONParser parserA = new JSONParser("{\"id\":19}");
 		Node rootA = parserA.parse();
-		NodToXMLA writerA = new NodToXMLA();
+		NodeToXMLA writerA = new NodeToXMLA();
 		List<String> resultant = writerA.writeXML(rootA);
 		String resultantStr = "";
 		for (String s : resultant) {
@@ -31,7 +31,7 @@ public class TestXMLWriter {
 		JSONParser parser = new JSONParser(
 				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}");
 		Node root = parser.parse();
-		NodToXMLA writerB = new NodToXMLA();
+		NodeToXMLA writerB = new NodeToXMLA();
 		List<String> resultant = writerB.writeXML(root);
 		String resultantStr = "";
 		for (String s : resultant) {
