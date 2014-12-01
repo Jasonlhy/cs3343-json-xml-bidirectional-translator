@@ -168,7 +168,7 @@ public class Console {
 	 */
 	public String checkTransformOptionByfile(String path) {
 		String content = getFileContent(path);
-		CustomLog.getInstance().info("determine transform: " + path);
+		//CustomLog.getInstance().info("determine transform: " + path);
 		char contentType = content.charAt(0);
 		if (contentType == '{') {
 			return JSON_TO_XML;
@@ -265,7 +265,7 @@ public class Console {
 		Console console = new Console();
 		console.welcomeMessage();
 
-		CustomLog.getInstance().info(("args length: " + args.length));
+		//CustomLog.getInstance().info(("args length: " + args.length));
 		if (args.length == 0) {
 			console.transformOptionMessage();
 			console.transformOption();
@@ -281,13 +281,10 @@ public class Console {
 
 			if ("\\S".equals(mode.toUpperCase())) {
 				if (convertMode == JSON_TO_XML) {
-					CustomLog.getInstance().info(
-							"input content for json parser: " + inputContent);
+					//CustomLog.getInstance().info("input content for json parser: " + inputContent);
 					console.transformOptionJSONtoXML(inputContent);
-					//System.out.print(console.getTransformedOutput());
 				} else if (convertMode == XML_TO_JSON) {
 					console.transformOptionXMLtoJSON(inputContent);
-					//System.out.print(console.getTransformedOutput());
 				} else {
 					console.inputArgumentsError();
 				}
@@ -301,8 +298,7 @@ public class Console {
 			String convertMode = console
 					.checkTransformOptionByfile(inputFileLocation);
 
-			CustomLog.getInstance().info(
-					"inputFileLocation: " + inputFileLocation);
+			//CustomLog.getInstance().info("inputFileLocation: " + inputFileLocation);
 			if ("\\F".equals(mode.toUpperCase())) {
 				if (convertMode == JSON_TO_XML) {
 					try {
