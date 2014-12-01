@@ -4,7 +4,7 @@ import java.util.*;
 
 import component.Node;
 
-public class NodToXMLA {
+public class NodeToXMLA {
 	
 	private Stack<String> elementStack;
 	private List<String> resultant;
