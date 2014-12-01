@@ -1,4 +1,4 @@
-package xml;
+package xml.testcase;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import json.JSONParser;
 
 import org.junit.Test;
 
+import xml.NodToXMLA;
 import component.Node;
 
 public class TestXMLWriter {
