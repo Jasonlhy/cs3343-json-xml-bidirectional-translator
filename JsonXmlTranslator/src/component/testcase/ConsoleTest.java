@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
+import utility.CustomLog;
 import component.Console;
 
 // TODO: Auto-generated Javadoc
@@ -31,7 +32,7 @@ public class ConsoleTest {
 	public void testMainWithXMLContentArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\s", "<name>winson</name>"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the XML to JSON successful.\n"+Console.getTransformedOutput());
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");
 	}
 	
 	/**
@@ -41,7 +42,7 @@ public class ConsoleTest {
 	public void testMainWithJSONContentArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\s", "{ \"id\" : 19, \"home\" : \"fanling\" }"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the JSON to XML successful.\n"+Console.getTransformedOutput());
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");
 	}
 	
 	/**
@@ -81,7 +82,7 @@ public class ConsoleTest {
 	public void testMainWithXMLFileArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\XmlFile\\StudentWithName.txt","C:\\Users\\Winson\\workspace_cs3343\\StudentWithName.txt"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the XML to JSON successful.\n");
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");
 	}
 	
 	/**
@@ -91,8 +92,7 @@ public class ConsoleTest {
 	public void testMainWithJSONFileArgument() {
 		System.setOut(new PrintStream(outContent));
 		Console.main(new String[] {"\\f", "C:\\Users\\Winson\\workspace_cs3343\\JsonXmlTranslator\\JSONFile\\SimpleJSON.txt","C:\\Users\\Winson\\workspace_cs3343\\SimpleJSON.txt"});
-		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\nTransform the JSON to XML successful.\n");
-	}
+		assertEquals(outContent.toString(),"*** Welcome to the XML & JSON Translator ***\n\n"+Console.getTransformedOutput()+"\n\nTransform the XML to JSON successful.\n");	}
 	
 	/**
 	 * Test main with wrong of 3 lengths argument.

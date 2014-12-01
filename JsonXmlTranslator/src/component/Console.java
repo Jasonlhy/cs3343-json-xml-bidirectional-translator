@@ -7,13 +7,8 @@ package component;
 import java.io.IOException;
 import java.util.*;
 
-import json.JSONParser;
-import utility.StringFileReader;
-import utility.StringFileWriter;
-import utility.CustomLog;
-import xml.NodeToXMLB;
-import xml.NodToXMLA;
-import xml.XMLParser;
+import utility.*;
+import xml.*;
 import json.*;
 
 /**
@@ -92,8 +87,7 @@ public class Console {
 
 				List<String> jsonOutput = transformOptionXMLtoJSON(xmlContent);
 				if (jsonOutput.size() > 0) {
-					setFileOutput(jsonFileLocation,
-							transformOptionXMLtoJSON(xmlContent));
+					setFileOutput(jsonFileLocation,jsonOutput);
 				}
 
 			} catch (IOException e) {
@@ -201,7 +195,10 @@ public class Console {
 			root = parser.parse();
 
 			NodeToXMLB nodeToXML = new NodeToXMLB();
-			transformedOutput = nodeToXML.outputXMLFile(root);
+			
+			XMLBeautifier beautifier = new XMLBeautifier();
+			transformedOutput = beautifier.beautifier(nodeToXML.outputXMLFile(root));
+			System.out.print(transformedOutput+"\n\n");
 
 			System.out.print("Transform the JSON to XML successful.\n");
 
@@ -231,8 +228,10 @@ public class Console {
 
 		try {
 			root = xmlToNode.Translate(xmlContent);
-
-			transformedOutput = NodeToJSON.toJSONString(root);
+			
+			JSONBeautifier beautifier = new JSONBeautifier();
+			transformedOutput = beautifier.beautifier(NodeToJSON.toJSONString(root),true);
+			System.out.print(transformedOutput+"\n\n"); 
 
 			System.out.print("Transform the XML to JSON successful.\n");
 			output.add(NodeToJSON.toJSONString(root));
@@ -285,10 +284,10 @@ public class Console {
 					CustomLog.getInstance().info(
 							"input content for json parser: " + inputContent);
 					console.transformOptionJSONtoXML(inputContent);
-					System.out.print(console.getTransformedOutput());
+					//System.out.print(console.getTransformedOutput());
 				} else if (convertMode == XML_TO_JSON) {
 					console.transformOptionXMLtoJSON(inputContent);
-					System.out.print(console.getTransformedOutput());
+					//System.out.print(console.getTransformedOutput());
 				} else {
 					console.inputArgumentsError();
 				}
