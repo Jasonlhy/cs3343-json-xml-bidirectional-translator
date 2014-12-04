@@ -5,10 +5,26 @@ import java.util.regex.Pattern;
 
 import component.Node;
 
+/**
+ * XMLParser a class that object can be created for parsing the XML string to the Node object.
+ * and return. This class can handle the XML String and output as an node object with the same
+ * structure of the XML
+ * @author Ivan
+ * @since 2014-11-29
+ *
+ */
 public class XMLParser {
 	Stack<String> follower = new Stack<String>();
 	
-	
+	/**
+	 * Translate handle XML string and call the recursive function to convert the XML String
+	 * to Node Object and return the Node Object to other class.
+	 * @param xmlString
+	 * 				The XML string to be convert to Node Object
+	 * @return a Node Object with same structure of input XML
+	 * @throws Exception
+	 * 				XML format is not valid
+	 */
 	public Node Translate(String xmlString) throws Exception
 	{
 		Node result = null;
@@ -33,6 +49,17 @@ public class XMLParser {
 		
 		//return result;
 	}
+	/**
+	 * It is the recursive function that call by Translate with the main logic of convert
+	 * XML to node Object in handling the Open, Short and Close tag of XML.
+	 * @param xmlString
+	 * 				The XML string to be convert to Node Object
+	 * @param currentNode
+	 * 				The node object of current tag
+	 * @return		The current node object for recursive or Translate method for output. 
+	 * @throws Exception
+	 * 				XML format is not valid.
+	 */
 	
 	public Node TranslateToNode(StringBuilder xmlString, Node currentNode) throws Exception
 	{
@@ -112,6 +139,14 @@ public class XMLParser {
 	{
 		return "";
 	}*/
+	/**
+	 * A assistant method for checking the most left element of string is node or not by
+	 * using regex
+	 * @param xmlString
+	 * 				The XML string to be check
+	 * @return		True for node and False for not node. 
+	 *
+	 */
 	public boolean mostLeftisNode(String xmlString)
 	{
 		String regex = "<[^<>]+>";
@@ -121,12 +156,22 @@ public class XMLParser {
 			return true;
 		return false;
 	}
-	
+	/**
+	 * Get the node title of node
+	 * @param nodeString
+	 * 				It is a string of the tag such as "<A>"
+	 * @return		return the title as string such as A in upper example
+	 */
 	public String getNodename(String nodeString)
 	{
 		return nodeString.substring(1, nodeString.length()-1);
 	}
-	
+	/**
+	 * Get the value of the node
+	 * @param xmlString
+	 * 				It is a string having the value of node
+	 * @return		return the value of node as string
+	 */
 	public String getValue(StringBuilder xmlString)
 	{
 		/*String regex = "<?\\w*>?.*";
@@ -138,7 +183,15 @@ public class XMLParser {
 		xmlString.delete(0, matchStart);
 		return result;
 	}
-	
+	/**
+	 * Getting the start value and end value of the node for delete the handled node in XML
+	 * string
+	 * @param xmlString
+	 * 				XML string that with the handled node and needed to cut out the most 
+	 * 				left node
+	 * @return		integer array that include the start value at position 0 and end value at
+	 * 				position 1
+	 */
 	public int[] NodeStartAndEnd(String xmlString)
 	{
 		String regex = "<[^<>]+>";
@@ -151,6 +204,12 @@ public class XMLParser {
 		return match;
 		
 	}
+	/**
+	 * Class for handle the short type of node in XML
+	 * @param nodeString
+	 * 				The short type node String
+	 * @return		The node Object of the short node.
+	 */
 	
 	public Node getShortNameAndAttribute(String nodeString)
 	{
@@ -177,7 +236,13 @@ public class XMLParser {
 		}
 		return shortNode;
 	}
-	
+	/**
+	 * Using the looping to convert the attribute in short type of node to node object, one
+	 * attribute converts to one node
+	 * @param attriString
+	 * 				The string of the attribute of short node
+	 * @return		The node object of the attribute
+	 */
 	public Node getAttribute(String attriString)
 	{
 		Node attribute = new Node();
