@@ -60,6 +60,9 @@ public class JSONParser {
 		
 		validator = new JSONValidator(" { \"jason\" : [2333,2234,122,true, {\"nestedKey\" : \"nestedValue\" }], \"age\" : \"it seems ok\"}");
 		validator.parse();
+		
+		validator = new JSONValidator(" { \"jason\" : [] }");
+		validator.parse();
 
 		System.out.println("No error");
 	}
@@ -196,13 +199,13 @@ class JSONValidator {
 		next('{');
 		ws();
 		if (peek() == '}') {
-			System.out.println("Empty JSON Object");
+			// System.out.println("Empty JSON Object");
+			next('}');
 		} else {
 			members();
+			ws();
+			next('}');
 		}
-
-		ws();
-		next('}');
 	}
 
 	public void members() {
@@ -297,10 +300,9 @@ class JSONValidator {
 			next(']'); // empty array;
 		} else {
 			elements();
+			ws();
+			next(']');
 		}
-		
-		ws();
-		next(']');
 	}
 
 	public void elements() {
@@ -413,7 +415,7 @@ class JSONValidator {
 		if (c == '"') {
 			scanning = true;
 			str = "";
-			idx++;
+			next();
 		}
 
 		while (!isEnd() && scanning) {
@@ -421,10 +423,10 @@ class JSONValidator {
 
 			if (c == '"') {
 				scanning = false;
-				idx++;
+				next();
 			} else {
 				str += c;
-				idx++;
+				next();
 			}
 		}
 
