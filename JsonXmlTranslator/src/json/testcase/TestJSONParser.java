@@ -50,7 +50,7 @@ public class TestJSONParser {
 		
 		String expected = "root: { id : 19, home : fanling, wife: { name : hehe, phonenumber : 61556960 } }";
 		JSONParser parser = new JSONParser(
-				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}");
+				"{\"id\":19,\"home\":\"fanling\",\"wife\":{\"name\":\"hehe\",\"phonenumber\":\"61556960\"}}");
 		Node root = parser.parse();
 		assertEquals(expected, root.toString());
 	}
@@ -84,7 +84,7 @@ public class TestJSONParser {
 		try {
 			parser.parse();
 		} catch (JSONParseException ex){
-			assertEquals("Invalid JSON", ex.getMessage());
+			assertEquals("Empty String", ex.getMessage());
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class TestJSONParser {
 		try {
 			parser.parse();
 		} catch (JSONParseException ex){
-			assertEquals("Missing key for value around 6", ex.getMessage());
+			assertEquals("Expected key as string at 1", ex.getMessage());
 		}
 	}
 	
@@ -106,7 +106,13 @@ public class TestJSONParser {
 		try {
 			parser.parse();
 		} catch (JSONParseException ex){
-			assertEquals("Missing open bracket for double quote at 3", ex.getMessage());
+			assertEquals("Expected { at 0 but \" is found", ex.getMessage());
 		}
+	}
+	
+	@Test public void testJSONArraySimpleValue(){
+		JSONParser parser = new JSONParser(" { \"jason\" : [2333,2234,122,true, {\"nestedKey\" : 22, \"nestedValue\" : 222 , \"doublenested\" : {\"omg\" : 23} }, [\"nested array value\", \"nest array value2\"]], \"age\" : \"it seems ok\"}");
+		Node s= parser.parse();
+		assertEquals("root: { jason: { null : 2333, null : 2234, null : 122, null : true, null: { nestedKey : 22, nestedValue : 222, doublenested: { omg : 23 } }, null: { null : nested array value, null : nest array value2 } }, age : it seems ok }", s.toString());
 	}
 }

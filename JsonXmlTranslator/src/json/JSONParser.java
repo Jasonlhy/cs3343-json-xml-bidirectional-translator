@@ -1,15 +1,18 @@
 package json;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Stack;
-
 import component.Node;
-
 /**
  * Parse a JSON string into nodes. The fist node comes with a title: "root",
- * holding a list of nodes that are title-content pair. <br>
+ * holding a list of nodes that are title-content(key-value) pair. <br>
  * <br>
+ * 
+ * This is implemented as naive recursive descent using the grammar posted on json.org. 
+ * The parsing is using top down approach, unexpected syntax will be detected as throws JSONParseException in runtime.<br>
+ * 
+ * NOTE:<br>
+ * Node has title only : use as base node parent for holding key-value nodes or array elements<br>
+ * Node has both title and value: use as holding key-value in JSON Object<br>
+ * Node has null title (I mean null reference not "null") : It's an array element.<br>  
  * 
  * <pre>
  * Example 1, JSON Object is simple key-value pairs
@@ -38,128 +41,36 @@ import component.Node;
  *   [1] Node(title:"age",age:"20")
  * </pre>
  * 
+ * <pre>
+ * Example 3, JSON Object contains JSONArray
+ * {wife:{name:"jason"},age:[20, 30]} converts into three nodes =>
+ * Node(title: "root")
+ *   |
+ *   |
+ *   nodeList:
+ *   [0] Node(title:"wife")
+ *       |
+ *       |
+ *       nodeList:
+ *       [0] Node(title:"name", content:"jason") 
+ *      
+ *   [1] Node(title:"age")
+ *   	|
+ *   	|
+ *		nodeList:
+ *	  	[0] Node(title: null, content: "20")
+ *		[1] Node(title: null, content: "30")
+ * </pre>
+ * 
  * @author jason
  * @since 25-9-2014
+ * @version 2.0
  */
-public class JSONParser {
-	private String json;
-
-	public JSONParser(String json) {
-		this.json = json;
-	}
-
-	public static void main(String[] args) {
-		JSONValidator validator = new JSONValidator(" { } ");
-		validator.parse();
-
-		validator = new JSONValidator(" { \"jason\" : 123 } ");
-		validator.parse();
-
-		validator = new JSONValidator(" { \"jason\" : 123,\"age\" : 22.94, \"weight\" : -99 } ");
-		validator.parse();
-		
-		validator = new JSONValidator(" { \"jason\" : [2333,2234,122,true, {\"nestedKey\" : \"nestedValue\" }], \"age\" : \"it seems ok\"}");
-		validator.parse();
-		
-		validator = new JSONValidator(" { \"jason\" : [] }");
-		validator.parse();
-
-		System.out.println("No error");
-	}
-
-	/**
-	 * Parse the JSON string into node objects.
-	 * 
-	 * @return Node The root of the node
-	 * @throws JSONParseException
-	 *             when the parsing encountered error at runtime
-	 */
-	public Node parse() {
-		Stack<Node> nodeLevelStack = new Stack<Node>();
-
-		char chars[] = json.toCharArray();
-		String keyTemp = "";
-		String valueTemp = "";
-		boolean gettingKey = false;
-		boolean gettingValue = false;
-
-		// workingNode means the node you are working with to get the value
-		// e.g. "id" : 19
-		// when this scan though "id", the workingNode is NODE with title: "id"
-		Node workingNode = null;
-		for (int idx = 0; idx < json.length(); idx++) {
-			char c = json.charAt(idx);
-
-			if (c == '{') {
-				if (workingNode == null) {
-					Node rootNode = new Node("root");
-					nodeLevelStack.add(rootNode);
-				} else {
-					nodeLevelStack.add(workingNode);
-				}
-
-				gettingKey = false;
-				gettingValue = false;
-			} else if (!gettingKey && !gettingValue) {
-				if (c == '"') { // start getting key when you meet the first
-								// quote
-					gettingKey = true;
-					keyTemp = "";
-				} else if (c == ':') { // start getting value when you meet
-										// :
-					gettingValue = true;
-					valueTemp = "";
-				}
-			} else if (gettingKey) {
-				if (c == '"') { // end of getting value when you meet 2nd
-								// quote
-					if (nodeLevelStack.size() == 0) {
-						throw new JSONParseException("Missing open bracket for double quote at " + idx);
-					}
-
-					workingNode = new Node(keyTemp);
-					nodeLevelStack.peek().addNode(workingNode);
-					gettingKey = false;
-				} else {
-					keyTemp += c;
-				}
-			} else if (gettingValue) {
-				if (c == ',' || c == '}') {
-					gettingValue = false;
-					if (workingNode == null) {
-						throw new JSONParseException("Missing key for value around " + idx);
-					}
-					workingNode.setContent(valueTemp.trim());
-
-					if (c == '}') {
-
-						// keep the last level
-						if (nodeLevelStack.size() > 1) {
-							nodeLevelStack.pop();
-						}
-					}
-				} else {
-					// do not accept " as a value
-					if (c != '"')
-						valueTemp += c;
-				}
-			}
-		}
-
-		if (nodeLevelStack.size() == 0) {
-			throw new JSONParseException("Invalid JSON");
-		}
-
-		Node root = nodeLevelStack.get(0);
-		return root;
-	}
-}
-
-class JSONValidator {
+ public class JSONParser {
 	private String jsonString;
 	private int idx = -1; // next scan character index
 
-	public JSONValidator(String jsonString) {
+	public JSONParser(String jsonString) {
 		this.jsonString = jsonString;
 		this.idx = 0;
 	}
@@ -190,27 +101,44 @@ class JSONValidator {
 		idx++;
 	}
 
-	public void parse() {
-		object();
+	/**
+	 * Parse the JSON string into node objects.
+	 * 
+	 * @return Node The root of the node
+	 * @throws JSONParseException
+	 *             when the parsing encountered error at runtime
+	 */
+	public Node parse() {
+		if (isEnd()){
+			throw new JSONParseException("Empty String");
+		}
+		
+		Node jsonObject = object(new Node("root"));
+		if (!isEnd()){
+			throw new JSONParseException("The string is longer than enough to be a valid JSON");
+		} else {
+			return jsonObject;
+		}
 	}
 
-	public void object() {
+	public Node object(Node parentNode) {
 		ws();
 		next('{');
 		ws();
 		if (peek() == '}') {
-			// System.out.println("Empty JSON Object");
 			next('}');
 		} else {
-			members();
+			members(parentNode);
 			ws();
 			next('}');
 		}
+		
+		return parentNode;
 	}
 
-	public void members() {
+	public void members(Node parentNode) {
 		ws();
-		pair();
+		pair(parentNode);
 		ws();
 		
 		
@@ -220,22 +148,28 @@ class JSONValidator {
 		
 		if (peek() == ',') {
 			next(',');
-			members();
+			members(parentNode);
 		}
 	}
 
-	public void pair() {
+	public void pair(Node parentNode) {
 		ws();
 		String key = string();
 		System.out.println("Key in json object: " + key);
 		ws();
 		next(':');
 		ws();
-		String value = value();
+		Object value = value(new Node(key));
+		if (value instanceof Node){
+			parentNode.addNode((Node)value);
+		} else {
+			parentNode.addNode(new Node(key, (String) value));
+		}
+		
 		System.out.println("Value in json object: " + value);
 	}
 
-	public String value() {
+	public Object value(Node parentNode) {
 		ws();
 		
 		if (isEnd()){
@@ -243,15 +177,13 @@ class JSONValidator {
 		}
 		
 		char ch = peek();
-		String returnStr = "";
+		String returnStr = null;
 		
 		switch (ch){
 		case '{' : 
-			object();
-			break;
+			return object(parentNode);
 		case '[' :
-			array();
-			break;
+			return array(parentNode);
 		case '"' :
 			return string();
 		case '-':
@@ -291,7 +223,8 @@ class JSONValidator {
 
 	}
 
-	public void array() {
+	/** TODO */
+	public Node array(Node parentNode) {
 		ws();
 		next('[');
 		ws();
@@ -299,20 +232,36 @@ class JSONValidator {
 		if (peek() == ']'){
 			next(']'); // empty array;
 		} else {
-			elements();
+			elements(parentNode);
 			ws();
 			next(']');
 		}
+		
+		return parentNode;
 	}
 
-	public void elements() {
+	/** TODO */
+	public void elements(Node parentNode) {
 		ws();
-		String value = value();
+		
+		Object value = null;
+		if (peek() == '[' || peek() == '{'){
+			value = value(new Node(null)); // dummpy
+		} else {
+			value = value(parentNode);
+		}
+		
+		if (value instanceof Node){
+			parentNode.addNode((Node)value);
+		} else {
+			parentNode.addNode(new Node(null, (String)value));
+		}
+		
 		System.out.println("value of array elements: " + value);
 		ws();
 		if (peek() == ','){
 			next(',');
-			elements();
+			elements(parentNode);
 		}
 	}
 
@@ -374,11 +323,9 @@ class JSONValidator {
 
 		// integer or double
 		try {
-			System.out.println("Parse as Int for " + numberString);
 			return Integer.parseInt(numberString) + "";
 		} catch (NumberFormatException ex){
 			try {
-				System.out.println("Parse as double for " + numberString);
 				return Double.parseDouble(numberString) + "";
 			} catch (NumberFormatException ex2){
 				throw new JSONParseException("Expected number at " + initIdx + " but it is not found");
@@ -428,6 +375,10 @@ class JSONValidator {
 				str += c;
 				next();
 			}
+		}
+		
+		if (str == null){
+			throw new JSONParseException("Expected key as string at " + idx);
 		}
 
 		return str;
